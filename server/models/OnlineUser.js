@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const onlineUserSchema = new mongoose.Schema({
   firstName: String,
@@ -11,4 +11,4 @@ const onlineUserSchema = new mongoose.Schema({
   isStudent: Boolean,
 });
 
-module.exports = mongoose.model('OnlineUser', onlineUserSchema);
+module.exports = mongoose.model("OnlineUser", onlineUserSchema);

@@ -67,3 +67,50 @@
     padding: 1em;
   }
 }
+.glassmorphism-container {
+  background: rgba(246, 242, 242, 0.1); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Blur effect */
+  -webkit-backdrop-filter: blur(15px); /* For Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(33, 33, 33, 0.1); /* Subtle shadow */
+  padding: 20px;
+  
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.moving-gradient {
+  background: linear-gradient(270deg, #cad8ede7, #e7d4f9, hwb(196 79% 5% / 0.913));
+  background-size: 300% 300%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.movings-gradient {
+  background: linear-gradient(270deg, #cad8ede7, #e7d4f9, hwb(196 79% 5% / 0.913));
+
+  background-size: 200% 200%;
+  animation: gradientAnimation 10s ease infinite;
+}
