@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import logoImage from '../../assets/Logo/primaryLogo.png';
 import Confetti from 'react-confetti';
-import { FaGithub, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaLinkedin, FaInstagram,FaFacebook } from 'react-icons/fa';
 
 export default function SurveyStartPage() {
   const [isHovered, setIsHovered] = useState(false);
@@ -11,6 +11,7 @@ export default function SurveyStartPage() {
     { Icon: FaGithub, href: 'https://github.com/Skillonx-dev', label: 'GitHub' },
     { Icon: FaLinkedin, href: 'https://www.linkedin.com/company/skillonx/', label: 'LinkedIn' },
     { Icon: FaInstagram, href: 'https://www.instagram.com/skillonx/', label: 'Instagram' },
+    { Icon: FaFacebook, href: 'https://www.facebook.com/people/Skillonx-Classes/pfbid02fkYeqaq4GhbRnjhrWxU1vX1g6aZQ7Tuhm1HgQiAuCR7tMsedwKXeM1ucLTX89mHBl/?mibextid=ZbWKwL', label: 'Facebook' },
   ];
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function SurveyStartPage() {
         </div>
         
         <div className="backdrop-blur-lg bg-white/30 border border-white/20 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 md:space-y-8">
-            <h2 className='text-xl p-3 m-5 font-bold text-gray-800'>Thank you for submitting your application. We will review your application and get back to you. For more information, you can go with these links:</h2>
+            <h2 className='text-xl p-3 m-5 font-semibold text-gray-800'>Thank you for submitting your application. We will review your application and get back to you. For more information, you can go with these links:</h2>
              {/* Social links - centered on mobile, left-aligned on larger screens */}
           <div className="flex justify-center md:justify-start gap-6">
             {socialLinks.map(({ Icon, href, label }) => (
