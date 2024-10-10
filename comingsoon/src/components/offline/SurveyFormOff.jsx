@@ -61,7 +61,7 @@ export default function SurveyForm() {
     
     if (validateForm()) {
       try{
-        const response = await fetch("http://localhost:5000/api/offline",{
+        const response = await fetch("https://skillonx-website.onrender.com/api/offline",{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

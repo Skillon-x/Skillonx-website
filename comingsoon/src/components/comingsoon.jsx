@@ -38,7 +38,7 @@ export default function ComingSoon() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/emails', {
+      const response = await fetch('https://skillonx-website.onrender.com/api/emails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
