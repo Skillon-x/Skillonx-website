@@ -11,19 +11,34 @@ export default function ComingSoon() {
   const [countdown, setCountdown] = useState({ days: 4, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
+    // Check if an end time is already stored in localStorage
+    const savedEndTime = localStorage.getItem('countdownEndTime');
+    let endTime;
+
+    if (savedEndTime) {
+      endTime = new Date(savedEndTime);
+    } else {
+      // If not, set the countdown to 4 days from now and store the end time in localStorage
+      endTime = new Date();
+      endTime.setDate(endTime.getDate() + 4); // 4 days from now
+      localStorage.setItem('countdownEndTime', endTime);
+    }
+
     const timer = setInterval(() => {
-      setCountdown(prevCountdown => {
-        if (prevCountdown.seconds > 0) {
-          return { ...prevCountdown, seconds: prevCountdown.seconds - 1 };
-        } else if (prevCountdown.minutes > 0) {
-          return { ...prevCountdown, minutes: prevCountdown.minutes - 1, seconds: 59 };
-        } else if (prevCountdown.hours > 0) {
-          return { ...prevCountdown, hours: prevCountdown.hours - 1, minutes: 59, seconds: 59 };
-        } else if (prevCountdown.days > 0) {
-          return { days: prevCountdown.days - 1, hours: 23, minutes: 59, seconds: 59 };
-        }
-        return prevCountdown;
-      });
+      const now = new Date();
+      const timeDiff = endTime - now; // Difference in milliseconds
+
+      if (timeDiff <= 0) {
+        clearInterval(timer);
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      } else {
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+        setCountdown({ days, hours, minutes, seconds });
+      }
     }, 1000);
 
     return () => clearInterval(timer);
@@ -77,7 +92,6 @@ export default function ComingSoon() {
     <div className="min-h-screen flex flex-col justify-between items-center bg-white">
       <div className="flex-grow flex flex-col md:flex-row items-center justify-between p-4 md:p-12 lg:p-20 xl:p-32">
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
-          {/* Centered logo on mobile, left-aligned on larger screens */}
           <div className="flex justify-center md:justify-start mb-4">
             <img src={logoImage} alt="SkillOnX Logo" className="h-20 md:h-24 lg:h-28 w-auto" />
           </div>
@@ -118,7 +132,6 @@ export default function ComingSoon() {
             </button>
           </form>
 
-          {/* Success message */}
           {isSubmitted && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -129,7 +142,6 @@ export default function ComingSoon() {
             </motion.div>
           )}
 
-          {/* Error message */}
           {errorMessage && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -140,7 +152,6 @@ export default function ComingSoon() {
             </motion.div>
           )}
 
-          {/* Social links */}
           <div className="flex justify-center md:justify-start gap-4">
             {socialLinks.map(({ Icon, href, label }) => (
               <a
@@ -157,8 +168,7 @@ export default function ComingSoon() {
           </div>
         </div>
 
-        {/* Right side illustration with added margin */}
-        <div className="w-full md:w-1/2 flex ml-20  justify-center md:justify-end items-end hidden md:block">
+        <div className="w-full md:w-1/2 flex ml-20 justify-center md:justify-end items-end hidden md:block">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -174,8 +184,7 @@ export default function ComingSoon() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className=" py-2 text-center text-gray-600 text-sm">
+      <div className="py-2 text-center text-gray-600 text-sm">
         <p>&copy; 2024 SkillOnX. All rights reserved.</p>
       </div>
     </div>

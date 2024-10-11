@@ -12,6 +12,11 @@ const emailSchema = new mongoose.Schema({
       'Please enter a valid email address with a recognized domain (gmail, yahoo, hotmail, outlook, live).'
     ],
   },
+  createdAt: {
+    type: Date,
+    default: Date.now  // Automatically sets the current date and time
+  },
+  
 });
 
 const Email = mongoose.model('Email', emailSchema);
