@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaGithub, FaTwitter, FaLinkedin, FaInstagram,FaFacebook } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaFacebook } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import logoImage from '../assets/Logo/primaryLogo.png';
 import illustrationImage from '../assets/Images/ComingSoonPage/underConstruction.svg';
@@ -36,8 +36,7 @@ export default function ComingSoon() {
       alert('Please enter an email address');
       return;
     }
-    const devUrl = "http://localhost:5000"
-    const prodUrl = "https://skillonx-website.onrender.com"
+    const prodUrl = "https://skillonx-website.onrender.com";
 
     try {
       const response = await fetch(`${prodUrl}/api/emails`, {
@@ -158,13 +157,13 @@ export default function ComingSoon() {
           </div>
         </div>
 
-        {/* Right side illustration */}
-        <div className="w-full md:w-1/2 flex justify-center md:justify-end items-end">
+        {/* Right side illustration with added margin */}
+        <div className="w-full md:w-1/2 flex ml-20  justify-center md:justify-end items-end hidden md:block">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="relative"
+            className="relative mt-10 md:mt-0 md:ml-8 lg:ml-12"
           >
             <img
               src={illustrationImage}
@@ -176,7 +175,7 @@ export default function ComingSoon() {
       </div>
 
       {/* Footer */}
-      <div className="bg-gray-100 py-2 text-center text-gray-600 text-sm">
+      <div className=" py-2 text-center text-gray-600 text-sm">
         <p>&copy; 2024 SkillOnX. All rights reserved.</p>
       </div>
     </div>
