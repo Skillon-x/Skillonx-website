@@ -36,7 +36,11 @@ app.post('/api/emails', async (req, res) => {
     return res.status(400).json({ message: 'Email is required' });
   }
   try {
-    const newEmail = new Email({ email });
+    const newEmail = new Email({ 
+      email
+      
+     });
+    
     await newEmail.save();
     // sendMail(newEmail,"welcome to our website ","hi we are glad that you are here")
     res.status(201).json({ message: 'Email saved successfully' });
