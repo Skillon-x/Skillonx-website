@@ -10,7 +10,7 @@ const OfflineUser = require("./models/OfflineUser")
 const {sendMail} = require("./helper/SendMail")
 const app = express();
 const PORT = process.env.PORT || 5000;
-// const MongoDb = process.env.MONGO_URL
+// const MongoDb = process.env.MONGO_
 // Middleware
 app.use(cors({
   origin: ["http://localhost:5173","https://skillonx.com","https://skillonx.com/"],
