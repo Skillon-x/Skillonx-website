@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 // const MongoDb = process.env.MONGO_URL
 // Middleware
 app.use(cors({
-  origin: ["https://skillonx.com","https://skillonx.com/"],
+  origin: ["http://localhost:5173","https://skillonx.com","https://skillonx.com/"],
   // methods:['GET','POST'],
   credentials:true,
 }));
