@@ -12,7 +12,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 // const MongoDb = process.env.MONGO_URL
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://lovely-yeot-3f844f.netlify.app/",
+  methods:['GET','POST'],
+  credentials:true,
+}));
+app.options("*",cors())
 app.use(bodyParser.json());
 
 // Connect to MongoDB
