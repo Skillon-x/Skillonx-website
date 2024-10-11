@@ -8,23 +8,44 @@ export default function ComingSoon() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [countdown, setCountdown] = useState({ days: 4, hours: 0, minutes: 0, seconds: 0 });
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  // Countdown duration of 4 days in milliseconds
+  const countdownDuration = 4 * 24 * 60 * 60 * 1000;
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown(prevCountdown => {
-        if (prevCountdown.seconds > 0) {
-          return { ...prevCountdown, seconds: prevCountdown.seconds - 1 };
-        } else if (prevCountdown.minutes > 0) {
-          return { ...prevCountdown, minutes: prevCountdown.minutes - 1, seconds: 59 };
-        } else if (prevCountdown.hours > 0) {
-          return { ...prevCountdown, hours: prevCountdown.hours - 1, minutes: 59, seconds: 59 };
-        } else if (prevCountdown.days > 0) {
-          return { days: prevCountdown.days - 1, hours: 23, minutes: 59, seconds: 59 };
-        }
-        return prevCountdown;
-      });
-    }, 1000);
+    const calculateRemainingTime = () => {
+      const now = new Date().getTime();
+      const storedStartTime = localStorage.getItem('countdownStartTime');
+
+      if (!storedStartTime) {
+        // Store the initial countdown start time if not already stored
+        localStorage.setItem('countdownStartTime', now);
+        return countdownDuration;
+      }
+
+      const elapsedTime = now - parseInt(storedStartTime, 10);
+      return countdownDuration - elapsedTime;
+    };
+
+    const updateCountdown = () => {
+      const remainingTime = calculateRemainingTime();
+
+      if (remainingTime <= 0) {
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        localStorage.removeItem('countdownStartTime');
+      } else {
+        const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+        setCountdown({ days, hours, minutes, seconds });
+      }
+    };
+
+    updateCountdown();
+
+    const timer = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(timer);
   }, []);
@@ -158,7 +179,7 @@ export default function ComingSoon() {
         </div>
 
         {/* Right side illustration with added margin */}
-        <div className="w-full md:w-1/2 flex ml-20  justify-center md:justify-end items-end hidden md:block">
+        <div className="w-full md:w-1/2 flex ml-20 justify-center md:justify-end items-end hidden md:block">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -175,8 +196,8 @@ export default function ComingSoon() {
       </div>
 
       {/* Footer */}
-      <div className=" py-2 text-center text-gray-600 text-sm">
-        <p>&copy; 2024 SkillOnX. All rights reserved.</p>
+      <div className="py-2 text-center text-gray-600 text-sm">
+        <p>&copy; 2024 SkillOn. All rights reserved.</p>
       </div>
     </div>
   );

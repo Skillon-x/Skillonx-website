@@ -15,7 +15,8 @@ const emailSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now  // Automatically sets the current date and time
-  }
+  },
+  
 });
 
 const Email = mongoose.model('Email', emailSchema);
