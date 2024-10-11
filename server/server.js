@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 // const MongoDb = process.env.MONGO_URL
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:5173","https://lovely-yeot-3f844f.netlify.app","https://lovely-yeot-3f844f.netlify.app/"],
+  origin: ["http://localhost:5173","https://skillonx.com","https://skillonx.com/"],
   // methods:['GET','POST'],
   credentials:true,
 }));
