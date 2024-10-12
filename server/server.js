@@ -110,6 +110,7 @@ Product Head @ https://skillonx.com/`
         .status(400)
         .json({ message: "Please check the format of your email" });
     }
+    console.log(error.message);
 
     res
       .status(500)
