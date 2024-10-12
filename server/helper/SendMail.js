@@ -23,4 +23,17 @@ async function sendMail( to,subject,text,html) {
   console.log("Message sent: %s", info.messageId);
 }
 
-module.exports={sendMail}
+async function userMail(to,subject,text,html){
+  const info = await transporter.sendMail({
+    from: 'infoskillonx@gmail.com', // sender address
+    to,
+    subject,
+    text,
+    html
+  })
+  console.log("Message sent: %s", info.messageId);
+
+}
+
+module.exports={sendMail};
+module.exports = {userMail};

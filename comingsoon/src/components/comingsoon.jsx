@@ -11,37 +11,26 @@ export default function ComingSoon() {
   const [countdown, setCountdown] = useState({ days: 4, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    // Check if an end time is already stored in localStorage
-    const savedEndTime = localStorage.getItem('countdownEndTime');
-    let endTime;
+    const fetchCountdown = async () => {
+      try {
+        const prodUrl = "https://skillonx-website.onrender.com";
 
-    if (savedEndTime) {
-      endTime = new Date(savedEndTime);
-    } else {
-      // If not, set the countdown to 4 days from now and store the end time in localStorage
-      endTime = new Date();
-      endTime.setDate(endTime.getDate() + 4); // 4 days from now
-      localStorage.setItem('countdownEndTime', endTime);
-    }
-
-    const timer = setInterval(() => {
-      const now = new Date();
-      const timeDiff = endTime - now; // Difference in milliseconds
-
-      if (timeDiff <= 0) {
-        clearInterval(timer);
-        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      } else {
-        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-        setCountdown({ days, hours, minutes, seconds });
+        const response = await fetch("https://skillonx-website.onrender.com/api/countdown");
+        if (response.ok) {
+          const data = await response.json();
+          setCountdown(data);
+        } else {
+          console.error('Failed to fetch countdown');
+        }
+      } catch (error) {
+        console.error('Error fetching countdown:', error);
       }
-    }, 1000);
+    };
 
-    return () => clearInterval(timer);
+    const timer = setInterval(fetchCountdown, 1000); // Fetch every second to update the countdown
+
+    fetchCountdown(); // Initial fetch
+    return () => clearInterval(timer); // Cleanup interval on component unmount
   }, []);
 
   const handleSubmit = async (e) => {
