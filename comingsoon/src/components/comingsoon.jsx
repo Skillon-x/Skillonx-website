@@ -14,8 +14,8 @@ export default function ComingSoon() {
     const fetchCountdown = async () => {
       try {
         const prodUrl = "https://skillonx-website.onrender.com";
-
-        const response = await fetch("http://localhost:5000/api/countdown");
+        const devUrl = "http://localhost:5000"
+        const response = await fetch("https://skillonx-website.onrender.com/api/countdown");
         if (response.ok) {
           const data = await response.json();
           setCountdown(data);
