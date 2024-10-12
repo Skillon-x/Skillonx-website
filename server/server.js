@@ -44,11 +44,22 @@ app.post("/api/emails", async (req, res) => {
   try {
     const newEmail = new Email({
       email,
-      
     });
 
     await newEmail.save();
-    sendMail(email,"welcome to our website ","hi we are glad that you are here")
+    sendMail(
+      email,
+      "Thank You for Your Interest in SkillonX",
+      `Thank you for showing interest in SkillonX. We're excited to have you here!
+Our website is currently under development, but we'll update you as soon as it goes live. In the meantime, we invite you to follow us on our social media channels to stay connected:
+LinkedIn: https://www.linkedin.com/company/skillonx/
+Facebook: https://www.facebook.com/profile.php?id=61566923306085
+Instagram: https://www.instagram.com/skillonx/
+We look forward to sharing more with you soon.
+Best regards,
+Bibin Antony K
+Product Head @ https://skillonx.com/`
+    );
     res.status(201).json({ message: "Email saved successfully" });
   } catch (error) {
     if (error.code === 11000) {
