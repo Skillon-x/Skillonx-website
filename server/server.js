@@ -48,7 +48,7 @@ app.post("/api/emails", async (req, res) => {
     });
 
     await newEmail.save();
-    // sendMail(newEmail,"welcome to our website ","hi we are glad that you are here")
+    sendMail(email,"welcome to our website ","hi we are glad that you are here")
     res.status(201).json({ message: "Email saved successfully" });
   } catch (error) {
     if (error.code === 11000) {
