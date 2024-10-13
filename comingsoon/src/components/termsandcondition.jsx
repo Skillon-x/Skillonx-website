@@ -23,7 +23,7 @@ const termsandcondition = () => {
             <ul className="list-disc pl-5 mt-2 space-y-1">
               <li>Open to all individuals who have submitted an application to SKILLONX.</li>
               <li>Participants must be at least 18 years old or the age of majority in their jurisdiction.</li>
-              <li>Employees of SKILLONX and their immediate family members are not eligible.</li>
+              
             </ul>
           </section>
 

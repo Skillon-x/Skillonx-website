@@ -41,6 +41,7 @@ export default function ComingSoon() {
       return;
     }
     const prodUrl = "https://skillonx-website.onrender.com";
+    const devUrl = "http://localhost:5000";
 
     try {
       const response = await fetch(`${prodUrl}/api/emails`, {
