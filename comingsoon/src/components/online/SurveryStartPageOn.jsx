@@ -13,7 +13,7 @@ export default function SurveyStartPage() {
   }, []);
 
   return (
-    <div className="min-h-screen movings-gradient bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-100 to-gray-300 animate-gradient-x flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-1/2 h-1/2 bg-blue-200 rounded-full filter blur-[100px] opacity-30 animate-pulse"></div>
@@ -32,7 +32,7 @@ export default function SurveyStartPage() {
         </div>
         
         {/* Main content container with custom glassmorphism */}
-        <div className="glassmorphism-container p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 md:space-y-8">
+        <div className="glassmorphism-container shadow-gray-500 shadow-lg p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 md:space-y-8">
           {/* Illustration */}
           <div className="flex justify-center mb-4 sm:mb-6">
             <img 
@@ -78,15 +78,7 @@ export default function SurveyStartPage() {
           </Link>
           
           {/* Footer links */}
-          <div className="text-center text-xs sm:text-sm text-gray-500 space-y-2 sm:space-y-0 sm:flex sm:justify-center sm:space-x-4">
-            <a href="#" className="text-primary hover:text-blue-600 transition-colors duration-200 inline-block">
-              Save my progress and resume later
-            </a>
-            <span className="hidden sm:inline text-gray-300">|</span>
-            <a href="#" className="text-primary hover:text-blue-600 transition-colors duration-200 inline-block">
-              Resume a previously saved form
-            </a>
-          </div>
+          
         </div>
       </div>
     </div>
