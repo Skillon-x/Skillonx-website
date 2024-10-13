@@ -1,7 +1,8 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import { FaLinkedin, FaInstagram, FaUpload } from 'react-icons/fa';
 import { TailSpin } from 'react-loader-spinner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // To send the data to the backend
 import "../../App.css";
 
 export default function ResumePage() {
@@ -12,6 +13,7 @@ export default function ResumePage() {
   const [uploadComplete, setUploadComplete] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -36,12 +38,31 @@ export default function ResumePage() {
     return file || linkedinUrl.trim() !== '' || instagramUrl.trim() !== '';
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!isFormValid()) {
-      e.preventDefault();
       setErrorMessage('Please upload a resume or provide at least one social media link!');
     } else {
       setErrorMessage('');
+      const formData = new FormData();
+      formData.append('resume', file);
+      formData.append('linkedinUrl', linkedinUrl);
+      formData.append('instagramUrl', instagramUrl);
+
+      try {
+        // Send the form data to the backend API
+        await axios.post('http://localhost:5000/api/upload-resume', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        navigate('/FinalPage/online');
+
+        // alert('Resume submitted successfully');
+      } catch (error) {
+        console.error('Error submitting the resume:', error);
+        setErrorMessage('Failed to submit resume. Please try again.');
+      }
     }
   };
 
@@ -78,7 +99,7 @@ export default function ResumePage() {
         </p>
 
         {errorMessage && (
-          <p className="text-red-500 text-center">{errorMessage}</p>
+          <p className="text-red-300 text-center">{errorMessage}</p>
         )}
 
         <div className="space-y-4">
@@ -158,7 +179,7 @@ export default function ResumePage() {
         </div>
 
         <Link 
-            to="/FinalPage/offline"
+            to="/FinalPage/online"
             className="w-full text-white py-2 sm:py-3 px-4 sm:px-6 rounded-xl 
                        text-base sm:text-lg font-semibold
                        transition-all duration-300 ease-in-out
