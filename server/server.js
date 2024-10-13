@@ -87,6 +87,7 @@ app.post("/api/emails", async (req, res) => {
     });
 
     await newEmail.save();
+    res.status(201).json({ message: "Email saved successfully" });
     sendMail(
       email,
       "Thank You for Your Interest in SkillonX",
@@ -100,7 +101,7 @@ Best regards,
 Bibin Antony K
 Product Head @ https://skillonx.com/`
     );
-    res.status(201).json({ message: "Email saved successfully" });
+    
   } catch (error) {
     if (error.code === 11000) {
       return res.status(409).json({ message: "Email already exists" });
@@ -114,7 +115,7 @@ Product Head @ https://skillonx.com/`
 
     res
       .status(500)
-      .json({ message: "Internal server error or check your domain is right" });
+      .json(error);
   }
 });
 app.post("/api/online", async (req, res) => {

@@ -35,5 +35,4 @@ async function userMail(to,subject,text,html){
 
 }
 
-module.exports={sendMail};
-module.exports = {userMail};
+module.exports={sendMail,userMail};
