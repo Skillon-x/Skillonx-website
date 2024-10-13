@@ -10,7 +10,7 @@ import SurveyStartPageOff from './components/offline/SurveryStartPageOff'
 import SurveyFormOff from './components/offline/SurveyFormOff'
 import ResumePageOff from './components/offline/ResumePageOff'
 import FinalPageOff from './components/offline/FinalPageOff'
-
+import termsandcondition from './components/termsandcondition';
 
 const App = () => {
   return (
@@ -25,6 +25,7 @@ const App = () => {
         <Route path='/SurveyForm/offline' element={<SurveyFormOff />} />
         <Route path='/ResumePage/offline' element={<ResumePageOff />} />
         <Route path='/FinalPage/offline' element={<FinalPageOff />} />
+        <Route path='/termsandcondition' element={<termsandcondition />} />
       </Routes>
     </Router>
   );
