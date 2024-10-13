@@ -4,14 +4,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require('path');
 const Email = require("./models/Emails");
 const OnlineUser = require("./models/OnlineUser");
 const OfflineUser = require("./models/OfflineUser");
+const Resume = require("./models/Resume")
 const Countdown = require("./models/Countdown")
 const { sendMail , userMail } = require("./helper/SendMail");
+const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
 // const MongoDb = process.env.MONGO_
 // Middleware
 app.use(
@@ -27,7 +31,17 @@ app.use(
 );
 // app.options("*",cors())
 app.use(bodyParser.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname); // Save files with a timestamp
+  },
+});
 
+const upload = multer({ storage: storage });
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -116,6 +130,24 @@ Product Head @ https://skillonx.com/`
     res
       .status(500)
       .json(error);
+  }
+});
+app.post('/api/upload-resume', upload.single('resume'), async (req, res) => {
+  const { linkedinUrl, instagramUrl } = req.body;
+  const resumeFilePath = req.file ? req.file.path : null;
+
+  try {
+    // Save the resume data in MongoDB
+    const newResume = new Resume({
+      resumeFilePath,
+      linkedinUrl,
+      instagramUrl,
+    });
+    await newResume.save();
+    res.status(200).json({ message: 'Resume uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading resume:', error);
+    res.status(500).json({ message: 'Failed to upload resume' });
   }
 });
 app.post("/api/online", async (req, res) => {

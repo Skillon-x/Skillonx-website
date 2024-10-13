@@ -4,6 +4,7 @@ import Confetti from 'react-confetti';
 import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaFacebook } from 'react-icons/fa';
 import { Button } from '../Buttons/Button';
 import { Alert, AlertDescription, AlertTitle } from '../Buttons/Alert';
+import { useLocation } from 'react-router-dom';
 
 export default function SurveyStartPage() {
   const [isHovered, setIsHovered] = useState(false);
@@ -11,7 +12,7 @@ export default function SurveyStartPage() {
   const [isConfettiVisible, setIsConfettiVisible] = useState(false);
   const [referralLink, setReferralLink] = useState('');
   const [referralCode, setReferralCode] = useState('');
-
+  const location = useLocation();
   const socialLinks = [
     { Icon: FaGithub, href: 'https://github.com/Skillonx-dev', label: 'GitHub' },
     { Icon: FaLinkedin, href: 'https://www.linkedin.com/company/skillonx/', label: 'LinkedIn' },
@@ -46,13 +47,7 @@ export default function SurveyStartPage() {
 
   const trackReferral = () => {
     console.log(`Referral shared: ${referralCode}`);
-    // Here you would typically make an API call to your backend to track this referral
-    // Example API call (commented out):
-    // fetch('/api/track-referral', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ referralCode })
-    // });
+   
   };
 
   const handleShare = () => {

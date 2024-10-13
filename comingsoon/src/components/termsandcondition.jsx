@@ -1,15 +1,17 @@
 import React from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const termsandcondition = () => {
+const Termsandcondition = () => {
+  const navigate = useNavigate()
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
         <div className="bg-blue-600 px-4 py-5 sm:px-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg leading-6 font-medium text-white">SKILLONX Referral Program Terms and Conditions</h2>
-            <Link to="/survey-start" className="flex items-center text-white hover:text-blue-200 transition-colors">
+            <Link to="/SurveyStartPage/online" className="flex items-center text-white hover:text-blue-200 transition-colors">
               <FaArrowLeft className="mr-2" />
               Back
             </Link>
@@ -99,4 +101,4 @@ const termsandcondition = () => {
   );
 };
 
-export default termsandcondition;
+export default Termsandcondition;
