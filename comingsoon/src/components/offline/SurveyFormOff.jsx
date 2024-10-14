@@ -63,6 +63,7 @@ export default function SurveyFormOff() {
     let devUrl = "http://localhost:5000"
     let prodUrl = "https://skillonx-website.onrender.com"
     if (validateForm()) {
+      
       try {
         const response = await fetch("http://localhost:5000/api/offline", {
           method: 'POST',
@@ -71,6 +72,8 @@ export default function SurveyFormOff() {
           },
           body: JSON.stringify(userData)
         });
+        const result = await response.json();
+        console.log(result);
         console.log(response);
         if (response.ok) {
           navigate('/ResumePage/offline',{ state: { email: formData.email } });
