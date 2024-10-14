@@ -170,26 +170,25 @@ Product Head @ https://skillonx.com/`)
     res.status(400).json({ message: error.message });
   }
 });
-app.post('/api/increase-referral', async (req, res) => {
-  const { referralCode } = req.body;
+app.post('/api/save-referral', async (req, res) => {
+  const { email, referralCode } = req.body;
 
   try {
-    // Find the user by the referral code
-    const user = await OnlineUser.findOne({ referralCode });
+    // Find the user by email
+    const user = await OnlineUser.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: 'Referral code not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // Increment the referral count
-    user.referralCount += 1;
-
-    // Save the updated user
+    // Update the user's referral code
+    user.referralCode = referralCode;
     await user.save();
 
-    res.status(200).json({ message: 'Referral count updated successfully!' });
+    res.status(200).json({ message: 'Referral code saved successfully', user });
   } catch (error) {
-    res.status(500).json({ message: 'Error updating referral count', error });
+    console.error('Error saving referral code:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 app.post("/api/offline", async (req, res) => {

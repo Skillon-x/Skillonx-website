@@ -57,9 +57,10 @@ export default function SurveyForm() {
     e.preventDefault();
     let userData = {...formData, dob, isStudent}
     let devUrl = "http://localhost:5000"
+    let prodUrl = "https://skillonx-website.onrender.com"
     if (validateForm()) {
       try {
-        const response = await fetch("https://skillonx-website.onrender.com/api/online", {
+        const response = await fetch("http://localhost:5000/api/online", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ export default function SurveyForm() {
         });
         console.log(response);
         if (response.ok) {
-          navigate('/ResumePage/online');
+          navigate('/ResumePage/online',{ state: { email: formData.email } });
         }
       } catch (e) {
         console.log(e);
