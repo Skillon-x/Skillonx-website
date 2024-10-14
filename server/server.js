@@ -191,6 +191,29 @@ app.post('/api/save-referral', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+app.post('/api/increase-referral', async (req, res) => {
+  const { referralCode } = req.body;
+
+  try {
+    // Find the user who owns this referral code
+    const user = await OnlineUser.findOne({ referralCode });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Referral code not found' });
+    }
+
+    // Increment the referral count by 1
+    user.referralCount += 1;
+
+    // Save the updated user
+    await user.save();
+
+    res.json({ message: 'Referral count incremented', referralCount: user.referralCount });
+  } catch (error) {
+    console.error('Error incrementing referral count:', error);
+    res.status(500).json({ message: 'Error incrementing referral count' });
+  }
+});
 app.post("/api/offline", async (req, res) => {
   // const offlineUser = new OfflineUser(req.body);
   const{firstName,lastName,email,education,address,phone,dob,isStudent} = req.body

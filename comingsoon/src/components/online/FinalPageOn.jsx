@@ -42,7 +42,7 @@ export default function SurveyStartPage() {
   };
 
   const generateReferralLink = () => {
-    const baseUrl = 'https://skillonx.com/SurveyStartPage/online';
+    const baseUrl = ' http://localhost:5173/SurveyStartPage/online';
     const referralUrl = `${baseUrl}?ref=${referralCode}`;
     setReferralLink(referralUrl);
   };

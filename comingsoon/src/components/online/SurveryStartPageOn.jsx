@@ -17,10 +17,12 @@ export default function SurveyStartPage() {
     const referralCode = queryParams.get('ref');
     console.log('Current URL:', location.search);
     console.log('Referral code found:', referralCode);
-    // Only try to increase referral if the referral code exists
-    if (referralCode) {
-      // console.log('Referral code found:', referralCode); // Debugging purpose
 
+    // Check if referral has already been applied for this referral code
+    const storedReferralCode = localStorage.getItem('referralApplied');
+
+    // Only send referral request if referral code exists and hasn't been applied before
+    if (referralCode && storedReferralCode !== referralCode) {
       // Send the referral code to the backend to increase the referral count
       fetch('http://localhost:5000/api/increase-referral', {
         method: 'POST',
@@ -32,10 +34,15 @@ export default function SurveyStartPage() {
         .then(response => response.json())
         .then(data => {
           console.log('Referral increase response:', data); // Log backend response for debugging
+
+          // Store the referral code in localStorage to prevent duplicate increments
+          localStorage.setItem('referralApplied', referralCode);
         })
         .catch(error => console.error('Error:', error));
-    } else {
+    } else if (!referralCode) {
       console.log('No referral code provided in URL'); // Debugging purpose
+    } else {
+      console.log('Referral already applied for this code:', storedReferralCode);
     }
   }, [location]);
 
