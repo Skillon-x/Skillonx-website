@@ -152,7 +152,16 @@ app.post('/api/upload-resume', upload.single('resume'), async (req, res) => {
 });
 app.post("/api/online", async (req, res) => {
   // const onlineUser = new OnlineUser(req.body);
-  const{firstName,lastName,email,education,address,phone,dob,isStudent} = req.body
+  const{firstName,lastName,email,education,address,phone,dob,isStudent,referralCode} = req.body
+  if (referralCode) {
+    const referrer = await OnlineUser.findOne({ referralCode: referralCode });
+    
+    if (referrer) {
+      // Step 3: Increment referralFormSubmitted count for the referrer
+      referrer.referrelFormSubmitted += 1;
+      await referrer.save(); // Save the updated referrer details
+    }
+  }
   try {
     const onlineUser = new OnlineUser({firstName,lastName,email,education,address,phone,dob,isStudent})
     await onlineUser.save();
