@@ -23,4 +23,6 @@ const offlineUserSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('OfflineUser', offlineUserSchema);
+const OfflineUser =  mongoose.model('OfflineUser', offlineUserSchema);
+
+module.exports =  OfflineUser;
