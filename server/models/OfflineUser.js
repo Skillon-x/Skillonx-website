@@ -12,6 +12,7 @@ const offlineUserSchema = new mongoose.Schema({
   referralCode: {
     type: String,
     default: null, // Each user has a unique referral code
+    
   },
   referralCount: {
     type: Number,
