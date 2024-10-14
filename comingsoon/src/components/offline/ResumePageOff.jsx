@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaLinkedin, FaInstagram, FaUpload } from 'react-icons/fa';
 import { TailSpin } from 'react-loader-spinner';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // To send the data to the backend
 import "../../App.css";
 
@@ -14,7 +14,10 @@ export default function ResumePage() {
   const [isHovered, setIsHovered] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const { email } = location.state || {}; // Retrieve email from state
+  
+  console.log(email)
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
@@ -56,7 +59,7 @@ export default function ResumePage() {
             'Content-Type': 'multipart/form-data',
           },
         });
-        navigate('/FinalPage/online');
+        navigate('/FinalPage/offline',{ state: { email } });
 
         // alert('Resume submitted successfully');
       } catch (error) {
@@ -179,7 +182,7 @@ export default function ResumePage() {
         </div>
 
         <Link 
-            to="/FinalPage/online"
+            to="/FinalPage/offline"
             className="w-full text-white py-2 sm:py-3 px-4 sm:px-6 rounded-xl 
                        text-base sm:text-lg font-semibold
                        transition-all duration-300 ease-in-out

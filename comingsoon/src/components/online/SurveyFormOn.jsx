@@ -6,7 +6,7 @@ import logoImage from '../../assets/Logo/primaryLogo.png';
 import { FaUser, FaEnvelope, FaBook, FaCalendarAlt, FaHome, FaPhone } from 'react-icons/fa';
 import '../../App.css';
 
-export default function SurveyForm() {
+export default function SurveyFormOn() {
   const [isHovered, setIsHovered] = useState(false);
   const [dob, setDob] = useState(null);
   const [isStudent, setIsStudent] = useState(null);

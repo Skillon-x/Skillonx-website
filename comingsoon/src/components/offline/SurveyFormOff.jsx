@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation} from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import logoImage from '../../assets/Logo/primaryLogo.png';
 import { FaUser, FaEnvelope, FaBook, FaCalendarAlt, FaHome, FaPhone } from 'react-icons/fa';
 import '../../App.css';
 
-export default function SurveyForm() {
+export default function SurveyFormOff() {
   const [isHovered, setIsHovered] = useState(false);
   const [dob, setDob] = useState(null);
   const [isStudent, setIsStudent] = useState(null);
@@ -19,8 +19,12 @@ export default function SurveyForm() {
     address: '',
     phone: ''
   });
-
+  
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Extract referral code from state instead of URL
+  const referralCode = location.state?.referralCode;
 
   const formFields = [
     { name: 'firstName', label: 'First Name', icon: FaUser, placeholder: 'John' },
@@ -33,13 +37,13 @@ export default function SurveyForm() {
 
   const validateForm = () => {
     const errors = {};
-
+    
     formFields.forEach(field => {
       if (!formData[field.name]) {
         errors[field.name] = `${field.label} is required`;
       }
     });
-
+    
     if (!dob) {
       errors.dob = 'Date of Birth is required';
     }
@@ -49,16 +53,18 @@ export default function SurveyForm() {
     }
 
     setFormErrors(errors);
-
+    
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = { ...formData, dob, isStudent }
+    let userData = {...formData, dob, isStudent,referralCode}
+    let devUrl = "http://localhost:5000"
+    let prodUrl = "https://skillonx-website.onrender.com"
     if (validateForm()) {
       try {
-        const response = await fetch("https://skillonx-website.onrender.com/api/online", {
+        const response = await fetch("http://localhost:5000/api/offline", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -67,7 +73,7 @@ export default function SurveyForm() {
         });
         console.log(response);
         if (response.ok) {
-          navigate('/ResumePage/offline');
+          navigate('/ResumePage/offline',{ state: { email: formData.email } });
         }
       } catch (e) {
         console.log(e);
@@ -86,13 +92,13 @@ export default function SurveyForm() {
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-100 to-gray-300 animate-gradient-x flex flex-col items-center justify-center p-4 overflow-auto">
       <div className="w-full max-w-md mx-auto">
         <div className="mb-6 flex justify-center">
-          <img
-            src={logoImage}
-            alt="Company Logo"
+          <img 
+            src={logoImage} 
+            alt="Company Logo" 
             className="h-20 md:h-28 transition-transform duration-300 hover:scale-105"
           />
         </div>
-
+        
         <div className="w-full max-w-md rounded-lg shadow-2xl glassmorphism-enhanced p-6 space-y-6 bg-white shadow-gray-500 bg-opacity-20 backdrop-blur-lg">
           <style jsx>{`
             @keyframes loading {
@@ -113,9 +119,9 @@ export default function SurveyForm() {
               Step 1/2
             </p>
           </div>
-
+          
           <div className="w-full bg-blue-100 rounded-full h-2 overflow-hidden">
-            <div
+            <div 
               className="bg-gradient-to-r from-blue-300 to-blue-600 h-full rounded-full"
               style={{
                 width: '50%',
@@ -123,7 +129,7 @@ export default function SurveyForm() {
               }}
             />
           </div>
-
+          
           <form className="space-y-5" onSubmit={handleSubmit}>
             {formFields.map((field) => (
               <div key={field.name}>
@@ -146,7 +152,7 @@ export default function SurveyForm() {
                 {formErrors[field.name] && <p className="text-red-500 text-sm">{formErrors[field.name]}</p>}
               </div>
             ))}
-
+            
             <div>
               <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
               <div className="relative rounded-md shadow-sm">
@@ -174,16 +180,18 @@ export default function SurveyForm() {
                 <button
                   type="button"
                   onClick={() => setIsStudent(true)}
-                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${isStudent === true ? 'bg-blue-500 text-white' : 'bg-white  text-gray-700 hover:scale-95'
-                    } transition-colors duration-200`}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
+                    isStudent === true ? 'bg-blue-500 text-white' : 'bg-white  text-gray-700 hover:scale-95'
+                  } transition-colors duration-200`}
                 >
                   Yes
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsStudent(false)}
-                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${isStudent === false ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:scale-95'
-                    } transition-colors duration-200`}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
+                    isStudent === false ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:scale-95'
+                  } transition-colors duration-200`}
                 >
                   No
                 </button>
@@ -191,7 +199,7 @@ export default function SurveyForm() {
               {formErrors.isStudent && <p className="text-red-500 text-sm">{formErrors.isStudent}</p>}
             </div>
 
-            <button
+            <button 
               type="submit"
               className="w-full text-white py-3 px-6 rounded-xl 
                          text-lg font-semibold
@@ -209,8 +217,8 @@ export default function SurveyForm() {
                 {isHovered ? 'Continue' : 'Next'}
               </span>
               <svg className="w-5 h-5 ml-2 text-white relative z-10 transition-all duration-300 group-hover:translate-x-1"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
+                   fill="none" stroke="currentColor" viewBox="0 0 24 24" 
+                   xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
               </svg>
             </button>

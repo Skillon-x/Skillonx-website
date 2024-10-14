@@ -9,18 +9,17 @@ const offlineUserSchema = new mongoose.Schema({
   phone: String,
   dob: Date,
   isStudent: Boolean,
-  referrelId:{
-    type:String,
-    unique:true,
-    required:true,
+  referralCode: {
+    type: String,
+    unique: true, // Each user has a unique referral code
   },
-  referrelCount:{
-    default:0,
-    type:Number
+  referralCount: {
+    type: Number,
+    default: 0, // Tracks how many people used this user's referral code
   },
-  submittedFormCount:{
+  referrelFormSubmitted:{
+    type:Number,
     default:0,
-    type:Number
   }
 });
 

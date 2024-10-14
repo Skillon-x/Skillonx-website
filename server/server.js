@@ -7,7 +7,7 @@ const cors = require("cors");
 const path = require('path');
 const Email = require("./models/Emails");
 const OnlineUser = require("./models/OnlineUser");
-const OfflineUser = require("./models/OfflineUser");
+const OfflineUser = require("./models/OfflineUser")
 const Resume = require("./models/Resume")
 const Countdown = require("./models/Countdown")
 const { sendMail , userMail } = require("./helper/SendMail");
@@ -225,10 +225,19 @@ app.post('/api/increase-referral', async (req, res) => {
 });
 app.post("/api/offline", async (req, res) => {
   // const offlineUser = new OfflineUser(req.body);
-  const{firstName,lastName,email,education,address,phone,dob,isStudent} = req.body
-
+  const{firstName,lastName,email,education,address,phone,dob,isStudent,referralCode} = req.body
+  if (referralCode) {
+    const referrer = await OfflineUser.findOne({ referralCode: referralCode });
+    
+    if (referrer) {
+      // Step 3: Increment referralFormSubmitted count for the referrer
+      referrer.referrelFormSubmitted += 1;
+      await referrer.save(); // Save the updated referrer details
+    }
+  }
+  
   try {
-    const offlineUser = new OnlineUser({firstName,lastName,email,education,address,phone,dob,isStudent})
+    const offlineUser = new OfflineUser({firstName,lastName,email,education,address,phone,dob,isStudent})
     await offlineUser.save();
     userMail(email,"Thank You for Your Interest in SkillonX",`Thank you for showing interest in SkillonX. We're excited to have you here!
       Our website is currently under development, but we'll update you as soon as it goes live. In the meantime, we invite you to follow us on our social media channels to stay connected:
@@ -244,7 +253,50 @@ app.post("/api/offline", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+app.post('/api/save-referral/offline', async (req, res) => {
+  const { email, referralCode } = req.body;
 
+  try {
+    // Find the user by email
+    const user = await OfflineUser.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update the user's referral code
+    user.referralCode = referralCode;
+    await user.save();
+
+    res.status(200).json({ message: 'Referral code saved successfully', user });
+  } catch (error) {
+    console.error('Error saving referral code:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+app.post('/api/increase-referral/offline', async (req, res) => {
+  const { referralCode } = req.body;
+
+  try {
+    // Find the user who owns this referral code
+    const user = await OfflineUser.findOne({ referralCode });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Referral code not found' });
+    }
+
+    // Increment the referral count by 1
+    user.referralCount += 1;
+
+    // Save the updated user
+    await user.save();
+
+    res.json({ message: 'Referral count incremented', referralCount: user.referralCount });
+  } catch (error) {
+    console.error('Error incrementing referral count:', error);
+    res.status(500).json({ message: 'Error incrementing referral count' });
+  }
+});
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
