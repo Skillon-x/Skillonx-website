@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Added useLocation to capture URL params
 import logoImage from '../../assets/Logo/primaryLogo.png';
 import illustrationImage from '../../assets/Images/SurveyPage/SurveyStarterIllustrator.svg';
 import '../../App.css'; // Import the custom CSS file
@@ -7,10 +7,37 @@ import '../../App.css'; // Import the custom CSS file
 export default function SurveyStartPage() {
   const [isHovered, setIsHovered] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const location = useLocation(); // Access location object to get URL parameters
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+
+    // Extract the referral code from the URL
+    const queryParams = new URLSearchParams(location.search);
+    const referralCode = queryParams.get('ref');
+    console.log('Current URL:', location.search);
+    console.log('Referral code found:', referralCode);
+    // Only try to increase referral if the referral code exists
+    if (referralCode) {
+      // console.log('Referral code found:', referralCode); // Debugging purpose
+
+      // Send the referral code to the backend to increase the referral count
+      fetch('http://localhost:5000/api/increase-referral', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ referralCode }), // Send referral code to backend
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Referral increase response:', data); // Log backend response for debugging
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+      console.log('No referral code provided in URL'); // Debugging purpose
+    }
+  }, [location]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-100 to-gray-300 animate-gradient-x flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">

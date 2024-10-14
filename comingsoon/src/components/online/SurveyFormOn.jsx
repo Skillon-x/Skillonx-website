@@ -56,7 +56,7 @@ export default function SurveyForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let userData = {...formData, dob, isStudent}
-    
+    let devUrl = "http://localhost:5000"
     if (validateForm()) {
       try {
         const response = await fetch("https://skillonx-website.onrender.com/api/online", {
