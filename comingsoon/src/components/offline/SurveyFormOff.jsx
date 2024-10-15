@@ -24,7 +24,7 @@ export default function SurveyFormOff() {
   const location = useLocation();
 
   // Extract referral code from state instead of URL
-  const referralCode = location.state?.referralCode;
+  // const referralCode = location.state?.referralCode;
   // console.log(referralCode)
 
   const formFields = [
@@ -60,7 +60,7 @@ export default function SurveyFormOff() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = {...formData, dob, isStudent,referralCode}
+    let userData = {...formData, dob, isStudent}
     let devUrl = "http://localhost:5000"
     let prodUrl = "https://skillonx-website.onrender.com"
     if (validateForm()) {

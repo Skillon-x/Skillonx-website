@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaFacebook } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import logoImage from '../assets/Logo/primaryLogo.png';
@@ -14,8 +14,6 @@ export default function ComingSoon() {
   useEffect(() => {
     const fetchCountdown = async () => {
       try {
-        const prodUrl = "https://skillonx-website.onrender.com";
-        const devUrl = "http://localhost:5000"
         const response = await fetch("https://skillonx-website.onrender.com/api/countdown");
         if (response.ok) {
           const data = await response.json();
@@ -28,8 +26,8 @@ export default function ComingSoon() {
       }
     };
 
-    const timer = setInterval(fetchCountdown, 1000);
     fetchCountdown();
+    const timer = setInterval(fetchCountdown, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -40,14 +38,11 @@ export default function ComingSoon() {
       alert('Please enter an email address');
       return;
     }
-    const prodUrl = "https://skillonx-website.onrender.com";
     
     try {
-      const response = await fetch(`${prodUrl}/api/emails`, {
+      const response = await fetch("https://skillonx-website.onrender.com/api/emails", {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
 
@@ -90,6 +85,22 @@ export default function ComingSoon() {
       </div>
 
       <div className="flex-grow flex flex-col md:flex-row items-center justify-between p-4 md:p-12 lg:p-20 xl:p-32">
+        {/* Illustration - Mobile (top) */}
+        <div className="w-full md:hidden mt-16 mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="flex justify-center"
+          >
+            <img
+              src={illustrationImage}
+              alt="Under Construction"
+              className="w-48 h-auto"
+            />
+          </motion.div>
+        </div>
+
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
           <div className="flex justify-center md:justify-start mb-4">
             <img src={logoImage} alt="SkillOnX Logo" className="h-20 md:h-24 lg:h-28 w-auto" />
@@ -167,17 +178,18 @@ export default function ComingSoon() {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 flex ml-20 justify-center md:justify-end items-end hidden md:block">
+        {/* Illustration - Desktop (right side) */}
+        <div className="hidden md:flex w-1/2 justify-end items-end">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="relative mt-10 md:mt-0 md:ml-8 lg:ml-12"
+            className="relative md:ml-8 lg:ml-12"
           >
             <img
               src={illustrationImage}
-              alt="SkillOnX Illustration"
-              className="w-full max-w-xs md:max-w-sm lg:max-w-md h-auto"
+              alt="Under Construction"
+              className="w-64 h-auto lg:w-96 xl:w-full max-w-md"
             />
           </motion.div>
         </div>

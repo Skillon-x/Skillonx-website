@@ -56,7 +56,7 @@ export default function SurveyStartPage() {
     generateReferralLink();
 
     try {
-      const response = await fetch('http://localhost:5000/api/save-referral', {
+      const response = await fetch('https://skillonx-website.onrender.com/api/save-referral', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
