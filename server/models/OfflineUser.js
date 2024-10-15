@@ -11,7 +11,8 @@ const offlineUserSchema = new mongoose.Schema({
   isStudent: Boolean,
   referralCode: {
     type: String,
-    default: null, // Each user has a unique referral code
+    unique: false,
+    sparse: true, // Each user has a unique referral code
     
   },
   referralCount: {

@@ -25,6 +25,7 @@ export default function SurveyFormOff() {
 
   // Extract referral code from state instead of URL
   const referralCode = location.state?.referralCode;
+  // console.log(referralCode)
 
   const formFields = [
     { name: 'firstName', label: 'First Name', icon: FaUser, placeholder: 'John' },

@@ -280,7 +280,7 @@ app.post("/api/offline", async (req, res) => {
       phone,
       dob,
       isStudent,
-      referralCode,
+     
     });
     await offlineUser.save();
     userMail(
