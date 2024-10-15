@@ -54,6 +54,7 @@ mongoose
 
 // POST route to save email
 app.get("/api/countdown", async (req, res) => {
+  
   try {
     const countdown = await Countdown.findOne();
     if (!countdown) {
@@ -75,6 +76,7 @@ app.get("/api/countdown", async (req, res) => {
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
     res.json({ days, hours, minutes, seconds });
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -350,6 +352,10 @@ app.post("/api/increase-referral/offline", async (req, res) => {
   }
 });
 // Start the server
+
+ 
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
