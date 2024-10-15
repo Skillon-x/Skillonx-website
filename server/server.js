@@ -24,6 +24,7 @@ app.use(
       "http://localhost:5173",
       "https://skillonx.com",
       "https://skillonx.com/",
+      "https://lucky-yeot-c08cc8.netlify.app/"
     ],
     // methods:['GET','POST'],
     credentials: true,
