@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation} from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import logoImage from '../../assets/Logo/primaryLogo.png';
 import { FaUser, FaEnvelope, FaBook, FaCalendarAlt, FaHome, FaPhone } from 'react-icons/fa';
 import '../../App.css';
 
-export default function SurveyForm() {
+export default function SurveyFormOn() {
   const [isHovered, setIsHovered] = useState(false);
   const [dob, setDob] = useState(null);
   const [isStudent, setIsStudent] = useState(null);
@@ -20,7 +20,11 @@ export default function SurveyForm() {
     phone: ''
   });
   
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Extract referral code from state instead of URL
+  const referralCode = location.state?.referralCode;
 
   const formFields = [
     { name: 'firstName', label: 'First Name', icon: FaUser, placeholder: 'John' },
@@ -55,8 +59,9 @@ export default function SurveyForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = {...formData, dob, isStudent}
-    
+    let userData = {...formData, dob, isStudent,referralCode}
+    let devUrl = "http://localhost:5000"
+    let prodUrl = "https://skillonx-website.onrender.com"
     if (validateForm()) {
       try {
         const response = await fetch("https://skillonx-website.onrender.com/api/online", {
@@ -68,7 +73,7 @@ export default function SurveyForm() {
         });
         console.log(response);
         if (response.ok) {
-          navigate('/ResumePage/online');
+          navigate('/ResumePage/online',{ state: { email: formData.email } });
         }
       } catch (e) {
         console.log(e);

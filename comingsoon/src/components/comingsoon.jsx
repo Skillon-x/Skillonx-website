@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaFacebook } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import logoImage from '../assets/Logo/primaryLogo.png';
 import illustrationImage from '../assets/Images/ComingSoonPage/underConstruction.svg';
 
@@ -27,10 +28,9 @@ export default function ComingSoon() {
       }
     };
 
-    const timer = setInterval(fetchCountdown, 1000); // Fetch every second to update the countdown
-
-    fetchCountdown(); // Initial fetch
-    return () => clearInterval(timer); // Cleanup interval on component unmount
+    const timer = setInterval(fetchCountdown, 1000);
+    fetchCountdown();
+    return () => clearInterval(timer);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -42,7 +42,6 @@ export default function ComingSoon() {
     }
     const prodUrl = "https://skillonx-website.onrender.com";
     
-
     try {
       const response = await fetch(`${prodUrl}/api/emails`, {
         method: 'POST',
@@ -80,6 +79,16 @@ export default function ComingSoon() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between items-center bg-white">
+      {/* Register Button */}
+      <div className="absolute top-4 right-4 z-10">
+        <Link 
+          to="/SurveyStartPage/offline" 
+          className="px-4 py-2 mr-2 bg-primary text-white rounded-lg hover:bg-black hover:text-white transition-colors duration-300 text-sm md:text-base"
+        >
+          Register
+        </Link>
+      </div>
+
       <div className="flex-grow flex flex-col md:flex-row items-center justify-between p-4 md:p-12 lg:p-20 xl:p-32">
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
           <div className="flex justify-center md:justify-start mb-4">

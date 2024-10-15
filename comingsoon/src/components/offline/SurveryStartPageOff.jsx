@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import logoImage from '../../assets/Logo/primaryLogo.png';
 import illustrationImage from '../../assets/Images/SurveyPage/SurveyStarterIllustrator.svg';
 import '../../App.css'; // Import the custom CSS file
@@ -7,13 +7,54 @@ import '../../App.css'; // Import the custom CSS file
 export default function SurveyStartPage() {
   const [isHovered, setIsHovered] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [referralCode, setReferralCode] = useState(null); // State to hold referral code
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     setMounted(true);
+
+    // Extract the referral code from the URL
+    const queryParams = new URLSearchParams(window.location.search);
+    const code = queryParams.get('ref');
+    console.log('Current URL:', window.location.search);
+    console.log('Referral code found:', code);
+    setReferralCode(code); // Set the referral code state
+
+    // Check if referral has already been applied for this referral code
+    const storedReferralCode = localStorage.getItem('referralApplied');
+
+    // Only send referral request if referral code exists and hasn't been applied before
+    if (code && storedReferralCode !== code) {
+      // Send the referral code to the backend to increase the referral count
+      fetch('https://skillonx-website.onrender.com/api/increase-referral/offline', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ referralCode: code }), // Send referral code to backend
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Referral increase response:', data); // Log backend response for debugging
+
+          // Store the referral code in localStorage to prevent duplicate increments
+          localStorage.setItem('referralApplied', code);
+        })
+        .catch(error => console.error('Error:', error));
+    } else if (!code) {
+      console.log('No referral code provided in URL'); // Debugging purpose
+    } else {
+      console.log('Referral already applied for this code:', storedReferralCode);
+    }
   }, []);
 
+  const handleNext = () => {
+    // Navigate to SurveyForm with referral code in state
+    navigate('/SurveyForm/offline', { state: { referralCode } });
+  };
+
   return (
-    <div className="min-h-screen moving-gradient bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-100 to-gray-300 animate-gradient-x flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-1/2 h-1/2 bg-blue-200 rounded-full filter blur-[100px] opacity-30 animate-pulse"></div>
@@ -32,7 +73,7 @@ export default function SurveyStartPage() {
         </div>
         
         {/* Main content container with custom glassmorphism */}
-        <div className="glassmorphism-container p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 md:space-y-8">
+        <div className="glassmorphism-container shadow-gray-500 shadow-lg p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 md:space-y-8">
           {/* Illustration */}
           <div className="flex justify-center mb-4 sm:mb-6">
             <img 
@@ -53,8 +94,8 @@ export default function SurveyStartPage() {
           </div>
           
           {/* Next button */}
-          <Link 
-            to="/SurveyForm/offline"
+          <button 
+            onClick={handleNext}
             className="w-full text-white py-2 sm:py-3 px-4 sm:px-6 rounded-xl 
                        text-base sm:text-lg font-semibold
                        transition-all duration-300 ease-in-out
@@ -75,18 +116,7 @@ export default function SurveyStartPage() {
                  xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
             </svg>
-          </Link>
-          
-          {/* Footer links */}
-          <div className="text-center text-xs sm:text-sm text-gray-500 space-y-2 sm:space-y-0 sm:flex sm:justify-center sm:space-x-4">
-            <a href="#" className="text-primary hover:text-blue-600 transition-colors duration-200 inline-block">
-              Save my progress and resume later
-            </a>
-            <span className="hidden sm:inline text-gray-300">|</span>
-            <a href="#" className="text-primary hover:text-blue-600 transition-colors duration-200 inline-block">
-              Resume a previously saved form
-            </a>
-          </div>
+          </button>
         </div>
       </div>
     </div>
