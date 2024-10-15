@@ -26,7 +26,7 @@ export default function SurveyStartPage() {
     // Only send referral request if referral code exists and hasn't been applied before
     if (code && storedReferralCode !== code) {
       // Send the referral code to the backend to increase the referral count
-      fetch('http://localhost:5000/api/increase-referral/offline', {
+      fetch('https://skillonx-website.onrender.com/api/increase-referral/offline', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

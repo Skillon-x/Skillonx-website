@@ -54,7 +54,7 @@ export default function ResumePage() {
 
       try {
         // Send the form data to the backend API
-        await axios.post('http://localhost:5000/api/upload-resume', formData, {
+        await axios.post('https://skillonx-website.onrender.com/api/upload-resume', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

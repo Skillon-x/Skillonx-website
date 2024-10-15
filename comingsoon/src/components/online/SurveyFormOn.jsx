@@ -64,7 +64,7 @@ export default function SurveyFormOn() {
     let prodUrl = "https://skillonx-website.onrender.com"
     if (validateForm()) {
       try {
-        const response = await fetch("http://localhost:5000/api/online", {
+        const response = await fetch("https://skillonx-website.onrender.com/api/online", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
