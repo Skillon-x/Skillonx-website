@@ -53,46 +53,76 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // POST route to save email
-app.get("/api/countdown", async (req, res) => {
+// app.get("/api/countdown", async (req, res) => {
   
+//   try {
+//     const countdown = await Countdown.findOne();
+//     if (!countdown) {
+//       return res.status(404).json({ message: "Countdown not found" });
+//     }
+
+//     const now = new Date();
+//     const timeDiff = countdown.endTime - now;
+
+//     if (timeDiff <= 0) {
+//       return res.json({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+//     }
+
+//     const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+//     const hours = Math.floor(
+//       (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+//     );
+//     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+//     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+//     res.json({ days, hours, minutes, seconds });
+    
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+async function initializeCountdown() {
+  let countdown = await Countdown.findOne();
+  if (!countdown) {
+    countdown = new Countdown({
+      startDate: new Date(),
+      duration: 4 * 24 * 60 * 60 * 1000 // 4 days in milliseconds
+    });
+    await countdown.save();
+  }
+  return countdown;
+}
+app.get('/api/countdown', async (req, res) => {
   try {
-    const countdown = await Countdown.findOne();
-    if (!countdown) {
-      return res.status(404).json({ message: "Countdown not found" });
-    }
-
+    const countdown = await initializeCountdown();
     const now = new Date();
-    const timeDiff = countdown.endTime - now;
+    const elapsedTime = now - countdown.startDate;
+    const remainingTime = Math.max(countdown.duration - elapsedTime, 0);
 
-    if (timeDiff <= 0) {
-      return res.json({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-    }
-
-    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
     res.json({ days, hours, minutes, seconds });
-    
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error('Error fetching countdown:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
+
 // Create a countdown entry if it doesn't exist
-const createCountdown = async () => {
-  const existingCountdown = await Countdown.findOne();
-  if (!existingCountdown) {
-    const endTime = new Date();
-    endTime.setDate(endTime.getDate() + 4); // 4 days from now
-    await new Countdown({ endTime }).save();
-    console.log("Countdown created");
-  }
-};
+// const createCountdown = async () => {
+//   const existingCountdown = await Countdown.findOne();
+//   if (!existingCountdown) {
+//     const endTime = new Date();
+//     endTime.setDate(endTime.getDate() + 4); // 4 days from now
+//     await new Countdown({ endTime }).save();
+//     console.log("Countdown created");
+//   }
+// };
 
 app.post("/api/emails", async (req, res) => {
   const { email } = req.body;
@@ -261,17 +291,17 @@ app.post("/api/offline", async (req, res) => {
     phone,
     dob,
     isStudent,
-    referralCode,
+    
   } = req.body;
-  if (referralCode) {
-    const referrer = await OfflineUser.findOne({ referralCode: referralCode });
+  // if (referralCode) {
+  //   const referrer = await OfflineUser.findOne({ referralCode: referralCode });
 
-    if (referrer) {
-      // Step 3: Increment referralFormSubmitted count for the referrer
-      referrer.referrelFormSubmitted += 1;
-      await referrer.save(); // Save the updated referrer details
-    }
-  }
+  //   if (referrer) {
+  //     // Step 3: Increment referralFormSubmitted count for the referrer
+  //     referrer.referrelFormSubmitted += 1;
+  //     await referrer.save(); // Save the updated referrer details
+  //   }
+  // }
 
   try {
     const offlineUser = new OfflineUser({
@@ -304,53 +334,53 @@ app.post("/api/offline", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-app.post("/api/save-referral/offline", async (req, res) => {
-  const { email, referralCode } = req.body;
+// app.post("/api/save-referral/offline", async (req, res) => {
+//   const { email, referralCode } = req.body;
 
-  try {
-    // Find the user by email
-    const user = await OfflineUser.findOne({ email });
+//   try {
+//     // Find the user by email
+//     const user = await OfflineUser.findOne({ email });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
 
-    // Update the user's referral code
-    user.referralCode = referralCode;
-    await user.save();
+//     // Update the user's referral code
+//     user.referralCode = referralCode;
+//     await user.save();
 
-    res.status(200).json({ message: "Referral code saved successfully", user });
-  } catch (error) {
-    console.error("Error saving referral code:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-app.post("/api/increase-referral/offline", async (req, res) => {
-  const { referralCode } = req.body;
+//     res.status(200).json({ message: "Referral code saved successfully", user });
+//   } catch (error) {
+//     console.error("Error saving referral code:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+// app.post("/api/increase-referral/offline", async (req, res) => {
+//   const { referralCode } = req.body;
 
-  try {
-    // Find the user who owns this referral code
-    const user = await OfflineUser.findOne({ referralCode });
+//   try {
+//     // Find the user who owns this referral code
+//     const user = await OfflineUser.findOne({ referralCode });
 
-    if (!user) {
-      return res.status(404).json({ message: "Referral code not found" });
-    }
+//     if (!user) {
+//       return res.status(404).json({ message: "Referral code not found" });
+//     }
 
-    // Increment the referral count by 1
-    user.referralCount += 1;
+//     // Increment the referral count by 1
+//     user.referralCount += 1;
 
-    // Save the updated user
-    await user.save();
+//     // Save the updated user
+//     await user.save();
 
-    res.json({
-      message: "Referral count incremented",
-      referralCount: user.referralCount,
-    });
-  } catch (error) {
-    console.error("Error incrementing referral count:", error);
-    res.status(500).json({ message: "Error incrementing referral count" });
-  }
-});
+//     res.json({
+//       message: "Referral count incremented",
+//       referralCount: user.referralCount,
+//     });
+//   } catch (error) {
+//     console.error("Error incrementing referral count:", error);
+//     res.status(500).json({ message: "Error incrementing referral count" });
+//   }
+// });
 // Start the server
 
  

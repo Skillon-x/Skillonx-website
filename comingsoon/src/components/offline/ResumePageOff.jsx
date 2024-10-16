@@ -133,7 +133,7 @@ export default function ResumePage() {
                 visible={true}
                 height="80"
                 width="80"
-                color="#FFFFFF"
+                color="#3FA9F5"
                 ariaLabel="tail-spin-loading"
                 radius="1"
                 wrapperStyle={{}}
@@ -144,9 +144,9 @@ export default function ResumePage() {
           )}
 
           {uploadComplete && (
-            <div className="text-center text-green-300">
+            <div className="text-center text-blue-500">
               <p>✓ {file.name}</p>
-              <p className="text-sm">100% done</p>
+              <p className="text-sm text-blue-500">100% done</p>
               <button onClick={handleCancel} className="mt-2 bg-blue-600 text-white hover:bg-blue-700 transition duration-300">Cancel</button>
             </div>
           )}

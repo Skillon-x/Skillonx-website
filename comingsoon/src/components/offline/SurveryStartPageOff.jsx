@@ -14,43 +14,43 @@ export default function SurveyStartPage() {
     setMounted(true);
 
     // Extract the referral code from the URL
-    const queryParams = new URLSearchParams(window.location.search);
-    const code = queryParams.get('ref');
-    console.log('Current URL:', window.location.search);
-    console.log('Referral code found:', code);
-    setReferralCode(code); // Set the referral code state
+    // const queryParams = new URLSearchParams(window.location.search);
+    // const code = queryParams.get('ref');
+    // console.log('Current URL:', window.location.search);
+    // console.log('Referral code found:', code);
+    // setReferralCode(code); // Set the referral code state
 
     // Check if referral has already been applied for this referral code
-    const storedReferralCode = localStorage.getItem('referralApplied');
+    // const storedReferralCode = localStorage.getItem('referralApplied');
 
     // Only send referral request if referral code exists and hasn't been applied before
-    if (code && storedReferralCode !== code) {
-      // Send the referral code to the backend to increase the referral count
-      fetch('https://skillonx-website.onrender.com/api/increase-referral/offline', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ referralCode: code }), // Send referral code to backend
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Referral increase response:', data); // Log backend response for debugging
+    // if (code && storedReferralCode !== code) {
+    //   // Send the referral code to the backend to increase the referral count
+    //   fetch('http://localhost:5000/api/increase-referral/offline', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ referralCode: code }), // Send referral code to backend
+    //   })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       console.log('Referral increase response:', data); // Log backend response for debugging
 
-          // Store the referral code in localStorage to prevent duplicate increments
-          localStorage.setItem('referralApplied', code);
-        })
-        .catch(error => console.error('Error:', error));
-    } else if (!code) {
-      console.log('No referral code provided in URL'); // Debugging purpose
-    } else {
-      console.log('Referral already applied for this code:', storedReferralCode);
-    }
+    //       // Store the referral code in localStorage to prevent duplicate increments
+    //       localStorage.setItem('referralApplied', code);
+    //     })
+    //     .catch(error => console.error('Error:', error));
+    // } else if (!code) {
+    //   console.log('No referral code provided in URL'); // Debugging purpose
+    // } else {
+    //   console.log('Referral already applied for this code:', storedReferralCode);
+    // }
   }, []);
 
   const handleNext = () => {
     // Navigate to SurveyForm with referral code in state
-    navigate('/SurveyForm/offline', { state: { referralCode } });
+    navigate('/SurveyForm/offline');
   };
 
   return (

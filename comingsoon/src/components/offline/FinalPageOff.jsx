@@ -52,30 +52,30 @@ export default function SurveyStartPage() {
     // Here you can make an API call to track the referral if necessary
   };
 
-  const handleShare = async () => {
-    generateReferralLink();
+  // const handleShare = async () => {
+  //   generateReferralLink();
 
-    try {
-      const response = await fetch('http://localhost:5000/api/save-referral/offline', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, referralCode }), // Pass email and referral code to the backend
-      });
+  //   try {
+  //     const response = await fetch('http://localhost:5000/api/save-referral/offline', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email, referralCode }), // Pass email and referral code to the backend
+  //     });
 
-      const data = await response.json();
-      if (response.ok) {
-        console.log('Referral code saved:', data);
-      } else {
-        console.error('Error saving referral code:', data.message);
-      }
-    } catch (error) {
-      console.error('Error during referral code save request:', error);
-    }
+  //     const data = await response.json();
+  //     if (response.ok) {
+  //       console.log('Referral code saved:', data);
+  //     } else {
+  //       console.error('Error saving referral code:', data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during referral code save request:', error);
+  //   }
 
-    trackReferral(); // Optionally track the referral
-  };
+  //   trackReferral(); // Optionally track the referral
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-100 to-gray-300 animate-gradient-x flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden ">
@@ -145,7 +145,7 @@ export default function SurveyStartPage() {
             </Alert>
 
             {!referralLink ? (
-              <Button onClick={handleShare} className="w-full">
+              <Button  className="w-full">
                 Get my referral link
               </Button>
             ) : (
