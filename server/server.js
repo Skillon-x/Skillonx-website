@@ -166,7 +166,9 @@ Product Head @ https://skillonx.com/`
 app.post("/api/upload-resume", upload.single("resume"), async (req, res) => {
   const { linkedinUrl, instagramUrl } = req.body;
   const resumeFilePath = req.file ? req.file.path : null;
-
+  console.log('LinkedIn URL:', linkedinUrl);
+  console.log('Instagram URL:', instagramUrl);
+  console.log('Resume File Path:', resumeFilePath);
   try {
     // Save the resume data in MongoDB
     const newResume = new Resume({
@@ -174,6 +176,7 @@ app.post("/api/upload-resume", upload.single("resume"), async (req, res) => {
       linkedinUrl,
       instagramUrl,
     });
+    console.log(newResume)
     await newResume.save();
     res.status(200).json({ message: "Resume uploaded successfully" });
   } catch (error) {

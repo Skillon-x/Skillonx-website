@@ -51,6 +51,7 @@ export default function ResumePage() {
       formData.append('resume', file);
       formData.append('linkedinUrl', linkedinUrl);
       formData.append('instagramUrl', instagramUrl);
+      console.log('FormData:', linkedinUrl, instagramUrl,file);
 
       try {
         // Send the form data to the backend API
