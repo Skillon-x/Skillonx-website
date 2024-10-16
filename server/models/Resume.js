@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const ResumeSchema = new mongoose.Schema({
-  resumeFilePath: { type: String,},
+  resumeFilePath: { type: String,required: true},
   linkedinUrl: { type: String, default: '' },
   instagramUrl: { type: String, default: '' },
 });

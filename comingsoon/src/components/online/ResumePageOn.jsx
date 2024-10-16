@@ -40,7 +40,7 @@ export default function ResumePage() {
   const isFormValid = () => {
     return file || linkedinUrl.trim() !== '' || instagramUrl.trim() !== '';
   };
-
+  const prodUrl ="https://skillonx-website.onrender.com"
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid()) {
