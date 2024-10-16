@@ -77,7 +77,7 @@ export default function ComingSoon() {
       {/* Register Button */}
       <div className="absolute top-4 right-4 z-10">
         <Link 
-          to="/SurveyStartPage/offline" 
+          to="/SurveyStartPage/online" 
           className="px-4 py-2 mr-2 bg-primary text-white rounded-lg hover:bg-black hover:text-white transition-colors duration-300 text-sm md:text-base"
         >
           Register
@@ -85,7 +85,17 @@ export default function ComingSoon() {
       </div>
 
       <div className="flex-grow flex flex-col md:flex-row items-center justify-between p-4 md:p-12 lg:p-20 xl:p-32">
-        {/* Illustration - Mobile (top) */}
+        
+
+        <div className="w-full md:w-1/2 mb-8 md:mb-0 ">
+          <div className="flex justify-center md:justify-start mb-4">
+            <img src={logoImage} alt="SkillOnX Logo" className="h-20 md:h-24 lg:h-28 w-auto" />
+          </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 text-center md:text-left">
+            We're Building Something
+            <span className="text-primary"> Amazing</span>
+          </h1>
+            {/* Illustration - Mobile (top) */}
         <div className="w-full md:hidden mt-16 mb-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -100,20 +110,11 @@ export default function ComingSoon() {
             />
           </motion.div>
         </div>
-
-        <div className="w-full md:w-1/2 mb-8 md:mb-0">
-          <div className="flex justify-center md:justify-start mb-4">
-            <img src={logoImage} alt="SkillOnX Logo" className="h-20 md:h-24 lg:h-28 w-auto" />
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 text-center md:text-left">
-            We're Building Something
-            <span className="text-primary"> Amazing</span>
-          </h1>
           <p className="text-md md:text-lg text-gray-600 mb-6 text-center md:text-left">
             Our team of developers is working hard to bring you something extraordinary.
             Subscribe to be the first to know when we launch.
           </p>
-
+        
           {/* Countdown Timer */}
           <div className="flex justify-around mb-6">
             {Object.entries(countdown).map(([unit, value]) => (
