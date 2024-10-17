@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate,useLocation} from 'react-router-dom';
+import React, { useState } from 'react'; 
+import { useNavigate, useLocation } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import logoImage from '../../assets/Logo/primaryLogo.png';
@@ -30,38 +30,39 @@ export default function SurveyFormOn() {
     { name: 'firstName', label: 'First Name', icon: FaUser, placeholder: 'John' },
     { name: 'lastName', label: 'Last Name', icon: FaUser, placeholder: 'Doe' },
     { name: 'email', label: 'Email', icon: FaEnvelope, placeholder: 'you@example.com', type: 'email' },
-    { name: 'education', label: 'Current Education', icon: FaBook, placeholder: "e.g: Bachelor's in Computer Science" },
-    { name: 'address', label: 'Address', icon: FaHome, placeholder: '123 Main St, City, Country' },
+    { name: 'education', label: 'Current Education (Optional)', icon: FaBook, placeholder: "e.g: Bachelor's in Computer Science" },
+    { name: 'address', label: 'Address (Optional)', icon: FaHome, placeholder: '123 Main St, City, Country' },
     { name: 'phone', label: 'Phone Number', icon: FaPhone, placeholder: '+91 (555) 123-4567', type: 'tel' }
   ];
 
   const validateForm = () => {
     const errors = {};
-    
+
+    // Validate only required fields
     formFields.forEach(field => {
-      if (!formData[field.name]) {
-        errors[field.name] = `${field.label} is required`;
+      if (!formData[field.name] && field.name !== 'education' && field.name !== 'address') {
+        errors[field.name] = `${field.label.replace(' (Optional)', '')} is required`;
       }
     });
+
+    // Validate Date of Birth only if it's not selected
     
-    if (!dob) {
-      errors.dob = 'Date of Birth is required';
-    }
 
     if (isStudent === null) {
       errors.isStudent = 'Please select if you are a student';
     }
 
     setFormErrors(errors);
-    
+
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = {...formData, dob, isStudent,referralCode}
-    let devUrl = "http://localhost:5000"
-    let prodUrl = "https://skillonx-website.onrender.com"
+    let userData = { ...formData, dob, isStudent, referralCode };
+    let devUrl = "http://localhost:5000";
+    let prodUrl = "https://skillonx-website.onrender.com";
+    
     if (validateForm()) {
       try {
         const response = await fetch("https://skillonx-website.onrender.com/api/online", {
@@ -73,7 +74,7 @@ export default function SurveyFormOn() {
         });
         console.log(response);
         if (response.ok) {
-          navigate('/ResumePage/online',{ state: { email: formData.email } });
+          navigate('/ResumePage/online', { state: { email: formData.email } });
         }
       } catch (e) {
         console.log(e);
@@ -154,7 +155,7 @@ export default function SurveyFormOn() {
             ))}
             
             <div>
-              <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+              <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth (Optional)</label>
               <div className="relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <FaCalendarAlt className="h-5 w-5 text-gray-600" />
