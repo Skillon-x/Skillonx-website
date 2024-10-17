@@ -8,15 +8,12 @@ import '../../App.css';
 
 export default function SurveyFormOn() {
   const [isHovered, setIsHovered] = useState(false);
-  const [dob, setDob] = useState(null);
   const [isStudent, setIsStudent] = useState(null);
+  const [isLocation, setIsLocation] = useState(null);
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fullName: '',
     email: '',
-    education: '',
-    address: '',
     phone: ''
   });
   
@@ -27,11 +24,8 @@ export default function SurveyFormOn() {
   const referralCode = location.state?.referralCode;
 
   const formFields = [
-    { name: 'firstName', label: 'First Name', icon: FaUser, placeholder: 'John' },
-    { name: 'lastName', label: 'Last Name', icon: FaUser, placeholder: 'Doe' },
+    { name: 'fullName', label: 'Full Name', icon: FaUser, placeholder: 'John Doe' },
     { name: 'email', label: 'Email', icon: FaEnvelope, placeholder: 'you@example.com', type: 'email' },
-    { name: 'education', label: 'Current Education (Optional)', icon: FaBook, placeholder: "e.g: Bachelor's in Computer Science" },
-    { name: 'address', label: 'Address (Optional)', icon: FaHome, placeholder: '123 Main St, City, Country' },
     { name: 'phone', label: 'Phone Number', icon: FaPhone, placeholder: '+91 (555) 123-4567', type: 'tel' }
   ];
 
@@ -51,6 +45,9 @@ export default function SurveyFormOn() {
     if (isStudent === null) {
       errors.isStudent = 'Please select if you are a student';
     }
+    if (isLocation === null) {
+      errors.isLocation = 'Please select if you are from Mysore';
+    }
 
     setFormErrors(errors);
 
@@ -59,7 +56,8 @@ export default function SurveyFormOn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = { ...formData, dob, isStudent, referralCode };
+    let userData = { ...formData,  isStudent,isLocation, referralCode };
+    console.log(userData)
     let devUrl = "http://localhost:5000";
     let prodUrl = "https://skillonx-website.onrender.com";
     
@@ -154,7 +152,7 @@ export default function SurveyFormOn() {
               </div>
             ))}
             
-            <div>
+            {/* <div>
               <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth (Optional)</label>
               <div className="relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -173,7 +171,7 @@ export default function SurveyFormOn() {
                 />
               </div>
               {formErrors.dob && <p className="text-red-500 text-sm">{formErrors.dob}</p>}
-            </div>
+            </div> */}
 
             <div>
               <p className="block text-sm font-medium text-gray-700 mb-2">Are you a student?</p>
@@ -199,6 +197,30 @@ export default function SurveyFormOn() {
               </div>
               {formErrors.isStudent && <p className="text-red-500 text-sm">{formErrors.isStudent}</p>}
             </div>
+            <div>
+              <p className="block text-sm font-medium text-gray-700 mb-2">Are you from Mysore?</p>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={() => setIsLocation(true)}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
+                    isLocation === true ? 'bg-blue-500 text-white' : 'bg-white  text-gray-700 hover:scale-95'
+                  } transition-colors duration-200`}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsLocation(false)}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
+                    isLocation === false ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:scale-95'
+                  } transition-colors duration-200`}
+                >
+                  No
+                </button>
+              </div>
+              {formErrors.isLocation && <p className="text-red-500 text-sm">{formErrors.isLocation}</p>}
+            </div>
 
             <button 
               type="submit"
@@ -215,7 +237,7 @@ export default function SurveyFormOn() {
               <div className="absolute inset-0 bg-blue-500 transition-transform duration-300 ease-in-out group-hover:translate-x-[-100%]"></div>
               <div className="absolute inset-0 bg-gray-900 transition-transform duration-300 ease-in-out translate-x-[100%] group-hover:translate-x-0"></div>
               <span className="relative text-white z-10 transition-all duration-300 group-hover:tracking-wider">
-                {isHovered ? 'Continue' : 'Next'}
+                {isHovered ? 'Continue' : 'Submit'}
               </span>
               <svg className="w-5 h-5 ml-2 text-white relative z-10 transition-all duration-300 group-hover:translate-x-1"
                    fill="none" stroke="currentColor" viewBox="0 0 24 24" 

@@ -187,14 +187,11 @@ app.post("/api/upload-resume", upload.single("resume"), async (req, res) => {
 app.post("/api/online", async (req, res) => {
   // const onlineUser = new OnlineUser(req.body);
   const {
-    firstName,
-    lastName,
+    fullName,
     email,
-    education,
-    address,
     phone,
-    dob,
     isStudent,
+    isLocation,
     referralCode,
   } = req.body;
   if (referralCode) {
@@ -208,15 +205,13 @@ app.post("/api/online", async (req, res) => {
   }
   try {
     const onlineUser = new OnlineUser({
-      firstName,
-      lastName,
+      fullName,
       email,
-      education,
-      address,
       phone,
-      dob,
       isStudent,
+      isLocation
     });
+    console.log(onlineUser);
     await onlineUser.save();
     userMail(
       email,
@@ -286,14 +281,11 @@ app.post("/api/increase-referral", async (req, res) => {
 app.post("/api/offline", async (req, res) => {
   // const offlineUser = new OfflineUser(req.body);
   const {
-    firstName,
-    lastName,
+    fullName,
     email,
-    education,
-    address,
     phone,
-    dob,
     isStudent,
+    isLocation,
     
   } = req.body;
   // if (referralCode) {
@@ -308,16 +300,14 @@ app.post("/api/offline", async (req, res) => {
 
   try {
     const offlineUser = new OfflineUser({
-      firstName,
-      lastName,
+      fullName,
       email,
-      education,
-      address,
       phone,
-      dob,
       isStudent,
+      isLocation
      
     });
+    console.log(offlineUser)
     await offlineUser.save();
     userMail(
       email,

@@ -8,8 +8,8 @@ import '../../App.css';
 
 export default function SurveyFormOff() {
   const [isHovered, setIsHovered] = useState(false);
-  const [dob, setDob] = useState(null);
   const [isStudent, setIsStudent] = useState(null);
+  const [isLocation, setIsLocation] = useState(null);
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     firstName: '',
@@ -24,11 +24,8 @@ export default function SurveyFormOff() {
   const location = useLocation();
 
   const formFields = [
-    { name: 'firstName', label: 'First Name', icon: FaUser, placeholder: 'John' },
-    { name: 'lastName', label: 'Last Name', icon: FaUser, placeholder: 'Doe' },
+    { name: 'fullName', label: 'First Name', icon: FaUser, placeholder: 'John' },
     { name: 'email', label: 'Email', icon: FaEnvelope, placeholder: 'you@example.com', type: 'email' },
-    { name: 'education', label: 'Current Education (Optional)', icon: FaBook, placeholder: "e.g: Bachelor's in Computer Science" },
-    { name: 'address', label: 'Address (Optional)', icon: FaHome, placeholder: '123 Main St, City, Country' },
     { name: 'phone', label: 'Phone Number', icon: FaPhone, placeholder: '+91 (555) 123-4567', type: 'tel' }
   ];
 
@@ -36,7 +33,7 @@ export default function SurveyFormOff() {
     const errors = {};
     
     // Only validate required fields
-    ['firstName', 'lastName', 'email', 'phone'].forEach(field => {
+    ['fullName', 'email', 'phone'].forEach(field => {
       if (!formData[field]) {
         errors[field] = `${formFields.find(f => f.name === field).label} is required`;
       }
@@ -47,6 +44,9 @@ export default function SurveyFormOff() {
     if (isStudent === null) {
       errors.isStudent = 'Please select if you are a student';
     }
+    if (isLocation === null) {
+      errors.isLocation = 'Please select if you are from Mysore';
+    }
 
     setFormErrors(errors);
     
@@ -55,7 +55,7 @@ export default function SurveyFormOff() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = { ...formData, dob, isStudent };
+    let userData = { ...formData,isStudent,isLocation };
     if (validateForm()) {
       try {
         const response = await fetch("https://skillonx-website.onrender.com/api/offline", {
@@ -148,7 +148,7 @@ export default function SurveyFormOff() {
               </div>
             ))}
             
-            <div>
+            {/* <div>
               <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth (Optional)</label>
               <div className="relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -167,7 +167,7 @@ export default function SurveyFormOff() {
                 />
               </div>
               {formErrors.dob && <p className="text-red-500 text-sm">{formErrors.dob}</p>}
-            </div>
+            </div> */}
 
             <div>
               <p className="block text-sm font-medium text-gray-700 mb-2">Are you a student?</p>
@@ -188,6 +188,26 @@ export default function SurveyFormOff() {
                 </button>
               </div>
               {formErrors.isStudent && <p className="text-red-500 text-sm">{formErrors.isStudent}</p>}
+            </div>
+            <div>
+              <p className="block text-sm font-medium text-gray-700 mb-2">Are you from Mysore?</p>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={() => setIsLocation(true)}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${isLocation === true ? 'bg-blue-500 text-white' : 'bg-white  text-gray-700 hover:scale-95'} transition-colors duration-200`}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsLocation(false)}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${isLocation === false ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:scale-95'} transition-colors duration-200`}
+                >
+                  No
+                </button>
+              </div>
+              {formErrors.isLocation && <p className="text-red-500 text-sm">{formErrors.isLocation}</p>}
             </div>
 
             <button 
