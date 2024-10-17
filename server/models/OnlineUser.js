@@ -1,14 +1,11 @@
 const mongoose = require("mongoose");
 
 const onlineUserSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
+  fullName: String,
   email: String,
-  education: String,
-  address: String,
   phone: String,
-  dob: Date,
   isStudent: Boolean,
+  isLocation: Boolean,
   referralCode: {
     type: String,
     // unique: true, // Each user has a unique referral code

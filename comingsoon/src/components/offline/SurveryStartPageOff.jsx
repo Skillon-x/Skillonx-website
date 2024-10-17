@@ -89,7 +89,7 @@ export default function SurveyStartPage() {
               We're excited to learn more about you!
             </h1>
             <p className="text-gray-600 text-sm sm:text-base md:text-lg">
-              Please set aside 5-10 minutes to complete this survey.
+              Please set aside 1-2 minutes to complete this survey.
             </p>
           </div>
           
