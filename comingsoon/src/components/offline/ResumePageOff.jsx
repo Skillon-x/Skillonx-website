@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaLinkedin, FaInstagram, FaUpload } from 'react-icons/fa';
+import { FaLinkedin, FaUpload,FaGithub } from 'react-icons/fa';
 import { TailSpin } from 'react-loader-spinner';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // To send the data to the backend
@@ -98,7 +98,7 @@ export default function ResumePage() {
         </div>
 
         <p className="text-gray-800 text-center">
-          To move forward with our admissions process, we ask that you share either your resume or your social media handles.
+        Skilled applicants: Apply directly for our internship scholarship. Submit your resume, LinkedIn URL, and GitHub username via our application portal.
         </p>
 
         {errorMessage && (
@@ -168,11 +168,11 @@ export default function ResumePage() {
             </div>
             <div className="flex items-center border border-white shadow-xl rounded-md overflow-hidden bg-white bg-opacity-10">
               <span className="p-2">
-                <FaInstagram className="text-[#E1306C] w-6 h-6" />
+                <FaGithub className="text-[#232323] w-6 h-6" />
               </span>
               <input
                 type="url"
-                placeholder="https://instagram.com/username"
+                placeholder="https://github.com/username"
                 className="flex-grow p-2 outline-none bg-transparent text-gray-600 tracking-wide placeholder-gray-500 placeholder-opacity-70"
                 value={instagramUrl}
                 onChange={(e) => setInstagramUrl(e.target.value)}

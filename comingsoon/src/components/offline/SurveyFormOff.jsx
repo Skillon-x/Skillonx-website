@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate,useLocation} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import logoImage from '../../assets/Logo/primaryLogo.png';
@@ -19,35 +19,30 @@ export default function SurveyFormOff() {
     address: '',
     phone: ''
   });
-  
+
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Extract referral code from state instead of URL
-  // const referralCode = location.state?.referralCode;
-  // console.log(referralCode)
 
   const formFields = [
     { name: 'firstName', label: 'First Name', icon: FaUser, placeholder: 'John' },
     { name: 'lastName', label: 'Last Name', icon: FaUser, placeholder: 'Doe' },
     { name: 'email', label: 'Email', icon: FaEnvelope, placeholder: 'you@example.com', type: 'email' },
-    { name: 'education', label: 'Current Education', icon: FaBook, placeholder: "e.g: Bachelor's in Computer Science" },
-    { name: 'address', label: 'Address', icon: FaHome, placeholder: '123 Main St, City, Country' },
+    { name: 'education', label: 'Current Education (Optional)', icon: FaBook, placeholder: "e.g: Bachelor's in Computer Science" },
+    { name: 'address', label: 'Address (Optional)', icon: FaHome, placeholder: '123 Main St, City, Country' },
     { name: 'phone', label: 'Phone Number', icon: FaPhone, placeholder: '+91 (555) 123-4567', type: 'tel' }
   ];
 
   const validateForm = () => {
     const errors = {};
     
-    formFields.forEach(field => {
-      if (!formData[field.name]) {
-        errors[field.name] = `${field.label} is required`;
+    // Only validate required fields
+    ['firstName', 'lastName', 'email', 'phone'].forEach(field => {
+      if (!formData[field]) {
+        errors[field] = `${formFields.find(f => f.name === field).label} is required`;
       }
     });
     
-    if (!dob) {
-      errors.dob = 'Date of Birth is required';
-    }
+    
 
     if (isStudent === null) {
       errors.isStudent = 'Please select if you are a student';
@@ -60,11 +55,8 @@ export default function SurveyFormOff() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = {...formData, dob, isStudent}
-    let devUrl = "http://localhost:5000"
-    let prodUrl = "https://skillonx-website.onrender.com"
+    let userData = { ...formData, dob, isStudent };
     if (validateForm()) {
-      
       try {
         const response = await fetch("https://skillonx-website.onrender.com/api/offline", {
           method: 'POST',
@@ -75,9 +67,8 @@ export default function SurveyFormOff() {
         });
         const result = await response.json();
         console.log(result);
-        console.log(response);
         if (response.ok) {
-          navigate('/ResumePage/offline',{ state: { email: formData.email } });
+          navigate('/ResumePage/offline', { state: { email: formData.email } });
         }
       } catch (e) {
         console.log(e);
@@ -158,7 +149,7 @@ export default function SurveyFormOff() {
             ))}
             
             <div>
-              <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+              <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth (Optional)</label>
               <div className="relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <FaCalendarAlt className="h-5 w-5 text-gray-600" />
@@ -184,18 +175,14 @@ export default function SurveyFormOff() {
                 <button
                   type="button"
                   onClick={() => setIsStudent(true)}
-                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
-                    isStudent === true ? 'bg-blue-500 text-white' : 'bg-white  text-gray-700 hover:scale-95'
-                  } transition-colors duration-200`}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${isStudent === true ? 'bg-blue-500 text-white' : 'bg-white  text-gray-700 hover:scale-95'} transition-colors duration-200`}
                 >
                   Yes
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsStudent(false)}
-                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
-                    isStudent === false ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:scale-95'
-                  } transition-colors duration-200`}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${isStudent === false ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:scale-95'} transition-colors duration-200`}
                 >
                   No
                 </button>
@@ -205,13 +192,7 @@ export default function SurveyFormOff() {
 
             <button 
               type="submit"
-              className="w-full text-white py-3 px-6 rounded-xl 
-                         text-lg font-semibold
-                         transition-all duration-300 ease-in-out
-                         hover:shadow-lg hover:-translate-y-0.5
-                         active:translate-y-0 active:shadow-md
-                         flex items-center justify-center
-                         relative overflow-hidden group"
+              className="w-full text-white py-3 px-6 rounded-xl text-lg font-semibold transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-md flex items-center justify-center relative overflow-hidden group"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
