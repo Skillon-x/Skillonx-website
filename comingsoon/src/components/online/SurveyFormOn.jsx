@@ -41,6 +41,9 @@ export default function SurveyFormOn() {
 
     // Validate Date of Birth only if it's not selected
     
+    if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
+      errors.phone = 'Phone number must be exactly 10 digits';
+    }
 
     if (isStudent === null) {
       errors.isStudent = 'Please select if you are a student';

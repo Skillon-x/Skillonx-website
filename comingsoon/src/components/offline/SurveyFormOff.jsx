@@ -39,7 +39,9 @@ export default function SurveyFormOff() {
       }
     });
     
-    
+    if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
+      errors.phone = 'Phone number must be exactly 10 digits';
+    }
 
     if (isStudent === null) {
       errors.isStudent = 'Please select if you are a student';
