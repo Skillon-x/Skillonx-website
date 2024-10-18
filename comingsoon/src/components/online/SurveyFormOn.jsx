@@ -26,21 +26,19 @@ export default function SurveyFormOn() {
   const formFields = [
     { name: 'fullName', label: 'Full Name', icon: FaUser, placeholder: 'John Doe' },
     { name: 'email', label: 'Email', icon: FaEnvelope, placeholder: 'you@example.com', type: 'email' },
-    { name: 'phone', label: 'Phone Number', icon: FaPhone, placeholder: '+91 (555) 123-4567', type: 'tel' }
+    { name: 'phone', label: 'Phone Number', icon: FaPhone, placeholder: '1234567890', type: 'tel' }
   ];
 
   const validateForm = () => {
     const errors = {};
 
-    // Validate only required fields
+    // Validate required fields
     formFields.forEach(field => {
-      if (!formData[field.name] && field.name !== 'education' && field.name !== 'address') {
-        errors[field.name] = `${field.label.replace(' (Optional)', '')} is required`;
+      if (!formData[field.name]) {
+        errors[field.name] = `${field.label} is required`;
       }
     });
 
-    // Validate Date of Birth only if it's not selected
-    
     if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
       errors.phone = 'Phone number must be exactly 10 digits';
     }
@@ -59,10 +57,8 @@ export default function SurveyFormOn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = { ...formData,  isStudent,isLocation, referralCode };
-    console.log(userData)
-    let devUrl = "http://localhost:5000";
-    let prodUrl = "https://skillonx-website.onrender.com";
+    let userData = { ...formData, isStudent, isLocation, referralCode };
+    console.log(userData);
     
     if (validateForm()) {
       try {
@@ -87,7 +83,13 @@ export default function SurveyFormOn() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === 'phone') {
+      // Only allow digits and limit to 10 characters
+      const sanitizedValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, [name]: sanitizedValue });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   return (
@@ -154,27 +156,6 @@ export default function SurveyFormOn() {
                 {formErrors[field.name] && <p className="text-red-500 text-sm">{formErrors[field.name]}</p>}
               </div>
             ))}
-            
-            {/* <div>
-              <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth (Optional)</label>
-              <div className="relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaCalendarAlt className="h-5 w-5 text-gray-600" />
-                </div>
-                <DatePicker
-                  id="dob"
-                  selected={dob}
-                  onChange={(date) => setDob(date)}
-                  dateFormat="MMMM d, yyyy"
-                  showYearDropdown
-                  scrollableYearDropdown
-                  yearDropdownItemNumber={100}
-                  placeholderText="Select your date of birth"
-                  className={`block w-full pl-10 pr-3 py-2 rounded-lg border-0 ring-1 ring-inset ${formErrors.dob ? 'ring-red-500' : 'ring-gray-300'} bg-white/50 focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-all duration-200 ease-in-out text-gray-800 placeholder-gray-500`}
-                />
-              </div>
-              {formErrors.dob && <p className="text-red-500 text-sm">{formErrors.dob}</p>}
-            </div> */}
 
             <div>
               <p className="block text-sm font-medium text-gray-700 mb-2">Are you a student?</p>
