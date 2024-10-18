@@ -12,11 +12,8 @@ export default function SurveyFormOff() {
   const [isLocation, setIsLocation] = useState(null);
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fullName: '',
     email: '',
-    education: '',
-    address: '',
     phone: ''
   });
 
@@ -24,22 +21,30 @@ export default function SurveyFormOff() {
   const location = useLocation();
 
   const formFields = [
-    { name: 'fullName', label: 'First Name', icon: FaUser, placeholder: 'John' },
+    { name: 'fullName', label: 'Full Name', icon: FaUser, placeholder: 'John Doe' },
     { name: 'email', label: 'Email', icon: FaEnvelope, placeholder: 'you@example.com', type: 'email' },
-    { name: 'phone', label: 'Phone Number', icon: FaPhone, placeholder: '+91 (555) 123-4567', type: 'tel' }
+    { name: 'phone', label: 'Phone Number', icon: FaPhone, placeholder: '1234567890', type: 'tel' }
   ];
 
   const validateForm = () => {
     const errors = {};
     
-    // Only validate required fields
+    // Validate required fields
     ['fullName', 'email', 'phone'].forEach(field => {
       if (!formData[field]) {
         errors[field] = `${formFields.find(f => f.name === field).label} is required`;
       }
     });
     
-    
+    // Validate email format
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Email address is invalid';
+    }
+
+    // Validate phone number
+    if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
+      errors.phone = 'Phone number must be exactly 10 digits';
+    }
 
     if (isStudent === null) {
       errors.isStudent = 'Please select if you are a student';
@@ -55,7 +60,7 @@ export default function SurveyFormOff() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userData = { ...formData,isStudent,isLocation };
+    let userData = { ...formData, isStudent, isLocation };
     if (validateForm()) {
       try {
         const response = await fetch("https://skillonx-website.onrender.com/api/offline", {
@@ -80,7 +85,13 @@ export default function SurveyFormOff() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === 'phone') {
+      // Only allow digits and limit to 10 characters
+      const sanitizedValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, [name]: sanitizedValue });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   return (
@@ -147,27 +158,6 @@ export default function SurveyFormOff() {
                 {formErrors[field.name] && <p className="text-red-500 text-sm">{formErrors[field.name]}</p>}
               </div>
             ))}
-            
-            {/* <div>
-              <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth (Optional)</label>
-              <div className="relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaCalendarAlt className="h-5 w-5 text-gray-600" />
-                </div>
-                <DatePicker
-                  id="dob"
-                  selected={dob}
-                  onChange={(date) => setDob(date)}
-                  dateFormat="MMMM d, yyyy"
-                  showYearDropdown
-                  scrollableYearDropdown
-                  yearDropdownItemNumber={100}
-                  placeholderText="Select your date of birth"
-                  className={`block w-full pl-10 pr-3 py-2 rounded-lg border-0 ring-1 ring-inset ${formErrors.dob ? 'ring-red-500' : 'ring-gray-300'} bg-white/50 focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-all duration-200 ease-in-out text-gray-800 placeholder-gray-500`}
-                />
-              </div>
-              {formErrors.dob && <p className="text-red-500 text-sm">{formErrors.dob}</p>}
-            </div> */}
 
             <div>
               <p className="block text-sm font-medium text-gray-700 mb-2">Are you a student?</p>
