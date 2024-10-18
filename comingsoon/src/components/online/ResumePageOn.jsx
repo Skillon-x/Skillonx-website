@@ -16,8 +16,9 @@ export default function ResumePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { email } = location.state || {}; // Retrieve email from state
+
+  console.log(email);
   
-  console.log(email)
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
@@ -38,35 +39,31 @@ export default function ResumePage() {
   };
 
   const isFormValid = () => {
-    return file || linkedinUrl.trim() !== '' || instagramUrl.trim() !== '';
+    return true; // Make the form always valid to allow submission without resume or links
   };
-  const prodUrl ="https://skillonx-website.onrender.com"
+
+  const prodUrl ="https://skillonx-website.onrender.com";
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFormValid()) {
-      setErrorMessage('Please upload a resume or provide at least one social media link!');
-    } else {
-      setErrorMessage('');
-      const formData = new FormData();
-      formData.append('resume', file);
-      formData.append('linkedinUrl', linkedinUrl);
-      formData.append('instagramUrl', instagramUrl);
-      console.log('FormData:', linkedinUrl, instagramUrl,file);
+    setErrorMessage(''); // Reset any previous error message
 
-      try {
-        // Send the form data to the backend API
-        await axios.post('https://skillonx-website.onrender.com/api/upload-resume', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        navigate('/FinalPage/online',{ state: { email } });
+    const formData = new FormData();
+    formData.append('resume', file);
+    formData.append('linkedinUrl', linkedinUrl);
+    formData.append('instagramUrl', instagramUrl);
+    console.log('FormData:', linkedinUrl, instagramUrl, file);
 
-        // alert('Resume submitted successfully');
-      } catch (error) {
-        console.error('Error submitting the resume:', error);
-        setErrorMessage('Failed to submit resume. Please try again.');
-      }
+    try {
+      // Send the form data to the backend API
+      await axios.post(`${prodUrl}/api/upload-resume`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      navigate('/FinalPage/online', { state: { email } });
+    } catch (error) {
+      console.error('Error submitting the resume:', error);
+      setErrorMessage('Failed to submit resume. Please try again.');
     }
   };
 
@@ -99,8 +96,7 @@ export default function ResumePage() {
         </div>
 
         <p className="text-gray-800 text-center">
-        Skilled applicants: Apply directly for our internship scholarship. Submit your resume, LinkedIn URL, and GitHub username via our application portal.
-
+          Skilled applicants: Apply directly for our internship scholarship. Submit your resume, LinkedIn URL, and GitHub username via our application portal (optional).
         </p>
 
         {errorMessage && (
@@ -111,7 +107,7 @@ export default function ResumePage() {
           {!uploadComplete && !isUploading && (
             <div className="border-2 border-dashed border-blue-500 shadow-xl hover:scale-95 rounded-lg p-4 text-center cursor-pointer hover:bg-white hover:bg-opacity-10 transition duration-300" onClick={() => document.getElementById('resumeUpload').click()}>
               <FaUpload className="mx-auto text-blue-500 text-3xl mb-2" />
-              <p className="text-blue-500 font-semibold">Resume Upload</p>
+              <p className="text-blue-500 font-semibold">Resume Upload (Optional)</p>
               <input
                 type="file"
                 id="resumeUpload"
@@ -162,7 +158,7 @@ export default function ResumePage() {
               </span>
               <input
                 type="url"
-                placeholder="https://linkedin.com/profile"
+                placeholder="https://linkedin.com/profile (Optional)"
                 className="flex-grow p-2 outline-none bg-transparent text-gray-600 tracking-wide placeholder-gray-500 placeholder-opacity-70"
                 value={linkedinUrl}
                 onChange={(e) => setLinkedinUrl(e.target.value)}
@@ -174,7 +170,7 @@ export default function ResumePage() {
               </span>
               <input
                 type="url"
-                placeholder="https://github.com/username"
+                placeholder="https://github.com/username (Optional)"
                 className="flex-grow p-2 outline-none bg-transparent text-gray-600 tracking-wide placeholder-gray-500 placeholder-opacity-70"
                 value={instagramUrl}
                 onChange={(e) => setInstagramUrl(e.target.value)}

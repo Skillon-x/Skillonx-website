@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaLinkedin, FaUpload,FaGithub } from 'react-icons/fa';
+import { FaLinkedin, FaUpload, FaGithub } from 'react-icons/fa';
 import { TailSpin } from 'react-loader-spinner';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // To send the data to the backend
@@ -17,7 +17,8 @@ export default function ResumePage() {
   const location = useLocation();
   const { email } = location.state || {}; // Retrieve email from state
   
-  console.log(email)
+  console.log(email);
+  
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
@@ -38,7 +39,7 @@ export default function ResumePage() {
   };
 
   const isFormValid = () => {
-    return file || linkedinUrl.trim() !== '' || instagramUrl.trim() !== '';
+    return true; // Allow moving to the next page even if no resume or links are provided
   };
 
   const handleSubmit = async (e) => {
@@ -46,7 +47,8 @@ export default function ResumePage() {
     if (!isFormValid()) {
       setErrorMessage('Please upload a resume or provide at least one social media link!');
     } else {
-      setErrorMessage('');
+      setErrorMessage(''); // Clear error message
+
       const formData = new FormData();
       formData.append('resume', file);
       formData.append('linkedinUrl', linkedinUrl);
@@ -59,7 +61,7 @@ export default function ResumePage() {
             'Content-Type': 'multipart/form-data',
           },
         });
-        navigate('/FinalPage/offline',{ state: { email } });
+        navigate('/FinalPage/offline', { state: { email } });
 
         // alert('Resume submitted successfully');
       } catch (error) {
@@ -98,7 +100,7 @@ export default function ResumePage() {
         </div>
 
         <p className="text-gray-800 text-center">
-        Skilled applicants: Apply directly for our internship scholarship. Submit your resume, LinkedIn URL, and GitHub username via our application portal.
+          Skilled applicants: Apply directly for our internship scholarship. Submit your resume, LinkedIn URL, and GitHub username via our application portal (optional).
         </p>
 
         {errorMessage && (
@@ -109,7 +111,7 @@ export default function ResumePage() {
           {!uploadComplete && !isUploading && (
             <div className="border-2 border-dashed border-blue-500 shadow-xl hover:scale-95 rounded-lg p-4 text-center cursor-pointer hover:bg-white hover:bg-opacity-10 transition duration-300" onClick={() => document.getElementById('resumeUpload').click()}>
               <FaUpload className="mx-auto text-blue-500 text-3xl mb-2" />
-              <p className="text-blue-500 font-semibold">Resume Upload</p>
+              <p className="text-blue-500 font-semibold">Resume Upload (Optional)</p>
               <input
                 type="file"
                 id="resumeUpload"
@@ -160,7 +162,7 @@ export default function ResumePage() {
               </span>
               <input
                 type="url"
-                placeholder="https://linkedin.com/profile"
+                placeholder="https://linkedin.com/profile (Optional)"
                 className="flex-grow p-2 outline-none bg-transparent text-gray-600 tracking-wide placeholder-gray-500 placeholder-opacity-70"
                 value={linkedinUrl}
                 onChange={(e) => setLinkedinUrl(e.target.value)}
@@ -172,7 +174,7 @@ export default function ResumePage() {
               </span>
               <input
                 type="url"
-                placeholder="https://github.com/username"
+                placeholder="https://github.com/username (Optional)"
                 className="flex-grow p-2 outline-none bg-transparent text-gray-600 tracking-wide placeholder-gray-500 placeholder-opacity-70"
                 value={instagramUrl}
                 onChange={(e) => setInstagramUrl(e.target.value)}
