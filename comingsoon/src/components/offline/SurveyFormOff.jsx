@@ -36,12 +36,7 @@ export default function SurveyFormOff() {
       }
     });
     
-    // Validate email format
-    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Email address is invalid';
-    }
 
-    // Validate phone number
     if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
       errors.phone = 'Phone number must be exactly 10 digits';
     }
