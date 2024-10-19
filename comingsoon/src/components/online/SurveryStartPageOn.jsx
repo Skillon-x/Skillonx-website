@@ -109,7 +109,7 @@ export default function SurveyStartPage() {
             <div className="absolute inset-0 bg-sky-500 transition-transform duration-300 ease-in-out group-hover:translate-x-[-100%]"></div>
             <div className="absolute inset-0 bg-gray-900 transition-transform duration-300 ease-in-out translate-x-[100%] group-hover:translate-x-0"></div>
             <span className="relative z-10 transition-all text-white duration-300 group-hover:tracking-wider">
-              {isHovered ? 'Continue' : 'Next'}
+              {isHovered ? 'Continue' : 'Start'}
             </span>
             <svg className="w-4 h-4 sm:w-5 text-white sm:h-5 ml-2 relative z-10 transition-all duration-300 group-hover:translate-x-1"
                  fill="none" stroke="currentColor" viewBox="0 0 24 24" 
