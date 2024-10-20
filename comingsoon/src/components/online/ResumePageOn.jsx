@@ -55,16 +55,16 @@ export default function ResumePage() {
 
     try {
       // Send the form data to the backend API
-      await axios.post(`${prodUrl}/api/upload-resume`, formData, {
+      await axios.post(`https://skillonx-website.onrender.com/api/upload-resume`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      navigate('/FinalPage/online', { state: { email } });
     } catch (error) {
       console.error('Error submitting the resume:', error);
       setErrorMessage('Failed to submit resume. Please try again.');
     }
+    navigate('/FinalPage/online', { state: { email } });
   };
 
   return (
