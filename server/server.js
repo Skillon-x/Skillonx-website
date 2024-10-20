@@ -33,16 +33,17 @@ app.use(
 // app.options("*",cors())
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Save files with a timestamp
-  },
-});
-
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + "-" + file.originalname); // Save files with a timestamp
+//   },
+// });
+const storage = multer.memoryStorage(); // Store files in memory
 const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -165,12 +166,13 @@ Product Head @ https://skillonx.com/`
 });
 app.post("/api/upload-resume", upload.single("resume"), async (req, res) => {
   const { linkedinUrl, instagramUrl } = req.body;
-  const resumeFilePath = req.file ? req.file.path : null;
+  // const resumeFilePath = req.file ? req.file.path : null;
   console.log('LinkedIn URL:', linkedinUrl);
   console.log('Instagram URL:', instagramUrl);
-  console.log('Resume File Path:', resumeFilePath);
+  // console.log('Resume File Path:', resumeFilePath);
   try {
     // Save the resume data in MongoDB
+    const resumeFilePath = req.file.buffer.toString('base64');
     const newResume = new Resume({
       resumeFilePath,
       linkedinUrl,

@@ -53,6 +53,8 @@ export default function ResumePage() {
       formData.append('resume', file);
       formData.append('linkedinUrl', linkedinUrl);
       formData.append('instagramUrl', instagramUrl);
+      console.log('FormData:', linkedinUrl, instagramUrl, file);
+
 
       try {
         // Send the form data to the backend API
@@ -61,7 +63,7 @@ export default function ResumePage() {
             'Content-Type': 'multipart/form-data',
           },
         });
-        navigate('/FinalPage/offline', { state: { email } });
+        
 
         // alert('Resume submitted successfully');
       } catch (error) {
@@ -69,6 +71,7 @@ export default function ResumePage() {
         setErrorMessage('Failed to submit resume. Please try again.');
       }
     }
+    navigate('/FinalPage/offline', { state: { email } });
   };
 
   return (
