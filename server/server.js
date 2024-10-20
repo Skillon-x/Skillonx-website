@@ -52,7 +52,7 @@ mongoose
   .then(() => console.log("MongoDB is connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// POST route to save email
+//  route to save email
 // app.get("/api/countdown", async (req, res) => {
   
 //   try {
